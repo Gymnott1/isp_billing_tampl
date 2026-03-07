@@ -74,20 +74,26 @@ const closeSidebarOnMobile = () => {
       class="fixed md:static inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#0c0c0e] border-r border-zinc-200 dark:border-zinc-800 w-72 shrink-0"
     >
       <div class="h-16 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
-        <div class="flex items-center h-8 overflow-hidden">
+        <div class="flex items-center h-12 overflow-hidden">
           <img 
             v-if="!isSidebarOpen"
-            src="/favicon/apple-icon-114x114.png" 
-            class="w-8 h-8 shrink-0"
+            src="/assets/logo.png" 
+            class="w-8 h-8 shrink-0 transition-opacity duration-300 items-center"
             alt="Netic"
           />
-          <img 
-            v-else
-            src="/assets/imgi_1_logo.svg" 
-            class="h-7 w-auto transition-opacity duration-300"
-            alt="Netic ISP"
-          />
+ <template v-else>
+    <img 
+      src="/assets/logo.png" 
+      class="h-9 w-auto transition-opacity duration-300 shrink-0"
+      alt="Netic ISP"
+      loading="lazy"
+    /> 
+    <span class="font-bold p-2 whitespace-nowrap text-lg tracking-tight">
+      NETIC ISP
+    </span>
+  </template>
         </div>
+        
         <button @click="isSidebarOpen = false" class="md:hidden p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full">
           <X :size="20" />
         </button>
