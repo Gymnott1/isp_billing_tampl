@@ -1,3 +1,4 @@
+// router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import GeneralView from '../views/GeneralView.vue'
@@ -12,6 +13,8 @@ const routes = [
     { path: '/mikrotik', component: GeneralView, props: { title: 'Mikrotik Settings' } },
     { path: '/settings', component: GeneralView, props: { title: 'Settings' } },
     { path: '/account', component: GeneralView, props: { title: 'Account Profile' } },
+    { path: '/billing', component: GeneralView, props: { title: 'Billing & Subscriptions' } },
+    { path: '/notifications', component: GeneralView, props: { title: 'Notification Settings' } },
 ]
 
 export default createRouter({

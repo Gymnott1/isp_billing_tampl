@@ -125,7 +125,9 @@ const closeSidebarOnMobile = () => {
           <button @click="toggleSidebar" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-500 transition-colors">
             <Menu :size="20" />
           </button>
-          <h2 class="text-sm font-semibold truncate">Dashboard</h2>
+            <h2 class="text-sm font-semibold truncate capitalize">
+              {{ $route.path === '/' ? 'Dashboard' : $route.path.replace('/', '').replace('-', ' ') }}
+            </h2>
         </div>
         
         <div class="flex items-center gap-2 md:gap-4 shrink-0">
