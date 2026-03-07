@@ -36,17 +36,17 @@ const packageCounts = [
 ]
 
 const recentTransactions = [
-  { code: 'Pending', customer: 'CYRIL', amount: 'Ksh 1500', date: '07 Mar 2026, 17:24:04' },
-  { code: 'Pending', customer: 'Angel', amount: 'Ksh 9', date: '07 Mar 2026, 17:24:03' },
-  { code: 'Pending', customer: 'ANZARO', customer: 'ANZARO', amount: 'Ksh 9', date: '07 Mar 2026, 17:24:01' },
-  { code: 'Pending', customer: 'Unknown', amount: 'Ksh 5', date: '07 Mar 2026, 17:23:56' },
-  { code: 'UC7HA8M27X', customer: 'Unknown', amount: 'Ksh 30', date: '07 Mar 2026, 17:23:47' },
-  { code: 'UC7B18RMI7', customer: 'Unknown', amount: 'Ksh 10', date: '07 Mar 2026, 17:23:40' },
-  { code: 'UC7RO8RB5B', customer: 'Unknown', amount: 'Ksh 9', date: '07 Mar 2026, 17:23:20' },
-  { code: 'Pending', customer: 'Unknown', amount: 'Ksh 5', date: '07 Mar 2026, 17:23:08' },
-  { code: 'UC7528KP6W', customer: 'Dorine', amount: 'Ksh 9', date: '07 Mar 2026, 17:23:07' },
-  { code: 'UC7HK8TUIE', customer: 'trizah', amount: 'Ksh 29', date: '07 Mar 2026, 17:23:07' },
-  { code: 'Pending', customer: 'Yvonne', amount: 'Ksh 20', date: '07 Mar 2026, 17:23:06' },
+  { code: 'Pending', customer: 'CYRIL', amount: 'Ksh 1500', date: '07, 17:24:04' },
+  { code: 'Pending', customer: 'Angel', amount: 'Ksh 9', date: '07 , 17:24:03' },
+  { code: 'Pending', customer: 'ANZARO', customer: 'ANZARO', amount: 'Ksh 9', date: '07 , 17:24:01' },
+  { code: 'Pending', customer: 'Unknown', amount: 'Ksh 5', date: '07 , 17:23:56' },
+  { code: 'UC7HA8M27X', customer: 'Unknown', amount: 'Ksh 30', date: '07 , 17:23:47' },
+  { code: 'UC7B18RMI7', customer: 'Unknown', amount: 'Ksh 10', date: '07 , 17:23:40' },
+  { code: 'UC7RO8RB5B', customer: 'Unknown', amount: 'Ksh 9', date: '07 , 17:23:20' },
+  { code: 'Pending', customer: 'Unknown', amount: 'Ksh 5', date: '07 , 17:23:08' },
+  { code: 'UC7528KP6W', customer: 'Dorine', amount: 'Ksh 9', date: '07 , 17:23:07' },
+  { code: 'UC7HK8TUIE', customer: 'trizah', amount: 'Ksh 29', date: '07 , 17:23:07' },
+  { code: 'Pending', customer: 'Yvonne', amount: 'Ksh 20', date: '07 , 17:23:06' },
 ]
 </script>
 
