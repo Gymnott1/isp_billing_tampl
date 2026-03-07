@@ -81,17 +81,17 @@ const closeSidebarOnMobile = () => {
             class="w-8 h-8 shrink-0 transition-opacity duration-300 items-center"
             alt="Netic"
           />
- <template v-else>
-    <img 
-      src="/assets/logo.png" 
-      class="h-9 w-auto transition-opacity duration-300 shrink-0"
-      alt="Netic ISP"
-      loading="lazy"
-    /> 
-    <span class="font-bold p-2 whitespace-nowrap text-lg tracking-tight">
-      NETIC ISP
-    </span>
-  </template>
+          <template v-else>
+              <img 
+                src="/assets/logo.png" 
+                class="h-9 w-auto transition-opacity duration-300 shrink-0"
+                alt="Netic ISP"
+                
+              /> 
+              <span class="font-bold p-2 whitespace-nowrap text-lg tracking-tight">
+                NETIC ISP
+              </span>
+            </template>
         </div>
         
         <button @click="isSidebarOpen = false" class="md:hidden p-2 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full">
