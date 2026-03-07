@@ -1,85 +1,119 @@
 <script setup>
-import { TrendingUp, TrendingDown, MoreHorizontal } from 'lucide-vue-next'
+import { ref, computed } from 'vue'
+import { 
+  Coins, MessageSquare, Users, Wifi, Server, Eye, EyeOff 
+} from 'lucide-vue-next'
 
+const showRevenue = ref(true)
+
+const greeting = computed(() => {
+  const hour = new Date().getHours()
+  if (hour < 12) return { text: 'Good morning', emoji: '🌅' }
+  if (hour < 17) return { text: 'Good afternoon', emoji: '☀️' }
+  return { text: 'Good evening', emoji: '🌙' }
+})
+// Unified stats array for cleaner looping
 const stats = [
-  { label: 'Total Revenue', value: '$1,250.00', trend: '+12.5%', up: true, desc: 'Trending up this month' },
-  { label: 'New Customers', value: '1,234', trend: '-20%', up: false, desc: 'Down 20% this period' },
-  { label: 'Active Accounts', value: '45,678', trend: '+12.5%', up: true, desc: 'Strong user retention' },
-  { label: 'Growth Rate', value: '4.5%', trend: '+4.5%', up: true, desc: 'Steady performance increase' },
-]
-
-const tableData = [
-  { header: 'Cover page', type: 'Cover page', status: 'In Process', target: 18, limit: 5, reviewer: 'Eddie Lake' },
-  { header: 'Table of contents', type: 'Table of contents', status: 'Done', target: 29, limit: 24, reviewer: 'Eddie Lake' },
-  { header: 'Executive summary', type: 'Narrative', status: 'Done', target: 10, limit: 13, reviewer: 'Eddie Lake' },
+  { id: 'rev-today', label: 'Revenue Today (KSh)', value: '0.00', icon: Coins, type: 'revenue' },
+  { id: 'rev-month', label: 'Revenue March (KSh)', value: '0.00', icon: Coins, type: 'revenue' },
+  { id: 'sms', label: 'SMS Balance', value: '0', icon: MessageSquare, type: 'sms' },
+  { id: 'customers', label: 'Total customers', value: '2', icon: Users, type: 'standard' },
+  { id: 'hotspot', label: 'Hotspot Customers', value: '0', icon: Wifi, type: 'standard' },
+  { id: 'pppoe', label: 'PPPoE Customers', value: '0', icon: Server, type: 'standard' },
 ]
 </script>
 
 <template>
-  <div class="space-y-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div v-for="stat in stats" class="bg-white dark:bg-[#18181b] p-6 rounded-xl border border-gray-200 dark:border-zinc-800">
-        <div class="flex justify-between items-start mb-4">
-          <p class="text-zinc-500 text-sm">{{ stat.label }}</p>
-          <span :class="stat.up ? 'text-emerald-500 bg-emerald-500/10' : 'text-red-500 bg-red-500/10'" class="text-[10px] px-2 py-0.5 rounded flex items-center gap-1">
-            <TrendingUp v-if="stat.up" :size="12" />
-            <TrendingDown v-else :size="12" />
-            {{ stat.trend }}
-          </span>
+  <div class="space-y-6 max-w-[2000px] mx-auto">
+    <!-- Greeting Header -->
+    <header>
+      <h1 class="text-xl font-bold flex items-center gap-2">
+        {{ greeting.text }}, User {{ greeting.emoji }}
+      </h1>
+    </header>
+
+    <!-- Main Unified Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+      
+      <div v-for="stat in stats" :key="stat.id" 
+        class="bg-white dark:bg-[#18181b] p-5 rounded-xl border border-gray-200 dark:border-zinc-800 flex flex-col justify-between relative overflow-hidden h-32 group"
+      >
+        <div class="relative z-10">
+          <!-- Value Display -->
+          <h3 
+            :class="[stat.type === 'revenue' && !showRevenue ? 'blur-md select-none' : '']" 
+            class="text-2xl font-bold transition-all duration-300 tracking-tight"
+          >
+            {{ stat.value }}
+          </h3>
+
+          <!-- Label & Action Buttons -->
+          <div class="mt-2 flex items-center gap-2">
+            <!-- Specific logic for Revenue Privacy Toggle -->
+            <button 
+              v-if="stat.type === 'revenue'"
+              @click="showRevenue = !showRevenue" 
+              class="flex items-center gap-1.5 text-[11px] font-bold text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300 transition-colors uppercase tracking-wider"
+            >
+              <component :is="showRevenue ? Eye : EyeOff" :size="14" />
+              {{ stat.label }}
+            </button>
+
+            <!-- Specific logic for SMS Top Up -->
+            <p v-else class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-2">
+              {{ stat.label }}
+              <button 
+                v-if="stat.type === 'sms'"
+                class="px-1.5 py-0.5 border border-zinc-300 dark:border-zinc-700 rounded text-[9px] hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors capitalize font-medium"
+              >
+                Top Up
+              </button>
+            </p>
+          </div>
         </div>
-        <h3 class="text-2xl font-bold mb-1">{{ stat.value }}</h3>
-        <p class="text-xs text-zinc-500">{{ stat.desc }}</p>
+
+        <!-- Watermark Background Icon -->
+        <component 
+          :is="stat.icon" 
+          class="absolute -right-2 -bottom-2 w-20 h-20 text-zinc-100 dark:text-zinc-800/40 -rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all duration-500" 
+        />
       </div>
     </div>
 
-    <div class="bg-white dark:bg-[#18181b] p-6 rounded-xl border border-gray-200 dark:border-zinc-800 h-80 flex flex-col">
-       <div class="flex justify-between items-center mb-8">
-          <div>
-            <h3 class="font-bold">Total Visitors</h3>
-            <p class="text-xs text-zinc-500">Total for the last 3 months</p>
-          </div>
-          <div class="flex bg-gray-100 dark:bg-zinc-900 rounded-lg p-1 text-xs">
-            <button class="px-4 py-1.5 rounded-md bg-white dark:bg-zinc-800 shadow-sm">Last 3 months</button>
-            <button class="px-4 py-1.5 rounded-md">Last 30 days</button>
-          </div>
-       </div>
-       <div class="flex-1 flex items-end gap-2 px-2">
-          <div v-for="i in 20" :key="i" :style="{ height: `${Math.random() * 100}%` }" class="flex-1 bg-blue-600/20 rounded-t-sm border-t border-blue-500"></div>
-       </div>
-    </div>
-
-  <div class="bg-white dark:bg-[#18181b] rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
-    <div class="overflow-x-auto">
-      <table class="w-full text-left border-collapse">
-        <thead>
-          <tr class="text-xs text-zinc-500 border-b border-gray-200 dark:border-zinc-800">
-            <th class="p-4 font-medium"><input type="checkbox" class="rounded border-zinc-700 bg-transparent" /></th>
-            <th class="p-4 font-medium uppercase tracking-wider">Header</th>
-            <th class="p-4 font-medium uppercase tracking-wider">Section Type</th>
-            <th class="p-4 font-medium uppercase tracking-wider">Status</th>
-            <th class="p-4 font-medium uppercase tracking-wider">Target</th>
-            <th class="p-4 font-medium uppercase tracking-wider">Reviewer</th>
-            <th class="p-4"></th>
-          </tr>
-        </thead>
-        <tbody class="text-sm">
-          <tr v-for="row in tableData" class="border-b border-gray-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
-            <td class="p-4"><input type="checkbox" class="rounded border-zinc-700 bg-transparent" /></td>
-            <td class="p-4 font-medium">{{ row.header }}</td>
-            <td class="p-4 text-zinc-400">{{ row.type }}</td>
-            <td class="p-4">
-              <span :class="row.status === 'Done' ? 'text-emerald-500' : 'text-zinc-400'" class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-current"></span>
-                {{ row.status }}
-              </span>
-            </td>
-            <td class="p-4">{{ row.target }}</td>
-            <td class="p-4 text-blue-400">{{ row.reviewer }}</td>
-            <td class="p-4 text-right"><MoreHorizontal :size="16" class="inline cursor-pointer" /></td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Activity Section (Placeholder) -->
+    <div class="bg-white dark:bg-[#18181b] p-6 rounded-xl border border-gray-200 dark:border-zinc-800">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-bold">Recent Activity</h3>
+        <button class="text-xs text-blue-600 font-medium hover:underline">View all logs</button>
+      </div>
+      <div class="h-48 border-2 border-dashed border-zinc-100 dark:border-zinc-800 rounded-lg flex items-center justify-center text-zinc-400 text-sm italic">
+        Real-time system logs will stream here...
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.blur-md {
+  filter: blur(8px);
+}
+
+/* Optional: smooth entry for cards */
+.grid > div {
+  animation: slideUp 0.4s ease forwards;
+  opacity: 0;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Staggered animation for the 6 cards */
+.grid > div:nth-child(1) { animation-delay: 0.05s; }
+.grid > div:nth-child(2) { animation-delay: 0.10s; }
+.grid > div:nth-child(3) { animation-delay: 0.15s; }
+.grid > div:nth-child(4) { animation-delay: 0.20s; }
+.grid > div:nth-child(5) { animation-delay: 0.25s; }
+.grid > div:nth-child(6) { animation-delay: 0.30s; }
+</style>
