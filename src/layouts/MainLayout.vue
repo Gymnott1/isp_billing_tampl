@@ -115,6 +115,9 @@ const closeSidebarOnMobile = () => {
           </div>
           <UserDropdown v-if="isUserMenuOpen" @close="isUserMenuOpen = false" />
         </div>
+        <div v-if="isSidebarOpen" class="mt-4 text-xs text-zinc-500 text-center">
+          &copy; 2024 Netic ISP | <a href="#" class="hover:underline">Privacy Policy</a>
+        </div>
       </div>
     </aside>
 
