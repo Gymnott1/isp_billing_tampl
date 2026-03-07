@@ -10,7 +10,6 @@ const props = defineProps({
 
 const route = useRoute()
 
-// Logic to check if the current link is active
 const isActive = computed(() => {
   if (props.to === '/') return route.path === '/'
   return route.path.startsWith(props.to)
@@ -28,10 +27,8 @@ const isActive = computed(() => {
     ]"
     style="transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;"
   >
-    <!-- Icon -->
     <component :is="icon" :size="20" class="shrink-0" />
     
-    <!-- Label (only shown if provided/sidebar is open) -->
     <span 
       v-if="label" 
       class="text-sm font-medium whitespace-nowrap"
@@ -42,7 +39,6 @@ const isActive = computed(() => {
 </template>
 
 <style scoped>
-/* Optional: prevent text selection during fast tapping on mobile */
 a {
   -webkit-tap-highlight-color: transparent;
   user-select: none;

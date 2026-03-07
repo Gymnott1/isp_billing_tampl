@@ -31,10 +31,8 @@ const toggleTheme = () => {
 }
 
 onMounted(() => {
-  // Sync Theme
   isDark.value = document.documentElement.classList.contains('dark')
 
-  // Sync Sidebar
   const savedSidebar = localStorage.getItem('sidebarStatus')
   if (window.innerWidth < 768) {
     isSidebarOpen.value = false
@@ -42,7 +40,6 @@ onMounted(() => {
     isSidebarOpen.value = savedSidebar === 'closed' ? false : true
   }
 
-  // Remove jumpy animations on load
   setTimeout(() => {
     isInitialLoad.value = false
   }, 50)
@@ -67,7 +64,6 @@ const closeSidebarOnMobile = () => {
 <template>
   <div class="min-h-screen bg-gray-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex font-sans overflow-hidden relative">
     
-    <!-- Sidebar -->
     <aside 
       :class="[
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full',
@@ -77,7 +73,6 @@ const closeSidebarOnMobile = () => {
       ]"
       class="fixed md:static inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#0c0c0e] border-r border-zinc-200 dark:border-zinc-800 w-72 shrink-0"
     >
-      <!-- Header -->
       <div class="h-16 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
         <div class="flex items-center gap-3 overflow-hidden">
           <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shrink-0 shadow-lg shadow-blue-600/20">N</div>
@@ -88,7 +83,6 @@ const closeSidebarOnMobile = () => {
         </button>
       </div>
 
-      <!-- Navigation -->
       <nav class="flex-1 px-4 space-y-1 overflow-y-auto pt-4 custom-scrollbar">
         <SidebarItem 
           v-for="item in mainNav" 
@@ -101,7 +95,6 @@ const closeSidebarOnMobile = () => {
         </div>
       </nav>
 
-      <!-- Footer -->
       <div class="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0c0c0e]">
         <SidebarItem to="/settings" :icon="Settings" :label="isSidebarOpen ? 'Settings' : ''" @click="closeSidebarOnMobile" />
         
@@ -109,8 +102,8 @@ const closeSidebarOnMobile = () => {
           <div @click.stop="isUserMenuOpen = !isUserMenuOpen" class="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors group">
             <div class="w-9 h-9 rounded bg-pink-600 flex items-center justify-center text-xs font-bold text-white shrink-0 group-hover:scale-105 transition-transform">ST</div>
             <div v-if="isSidebarOpen" class="flex-1 min-w-0">
-              <p class="text-sm font-semibold truncate leading-none mb-1">stevemosiori</p>
-              <p class="text-[11px] text-zinc-500 truncate leading-none">steve@gmail.com</p>
+              <p class="text-sm font-semibold truncate leading-none mb-1">username</p>
+              <p class="text-[11px] text-zinc-500 truncate leading-none">user@gmail.com</p>
             </div>
           </div>
           <UserDropdown v-if="isUserMenuOpen" @close="isUserMenuOpen = false" />
@@ -121,7 +114,6 @@ const closeSidebarOnMobile = () => {
       </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
       <header class="h-14 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 md:px-6 bg-white dark:bg-[#0c0c0e] shrink-0 z-10">
         <div class="flex items-center gap-4">
@@ -152,7 +144,6 @@ const closeSidebarOnMobile = () => {
       </div>
     </main>
 
-    <!-- Overlay -->
     <div v-if="isSidebarOpen" @click="isSidebarOpen = false" class="fixed inset-0 bg-black/60 z-40 md:hidden backdrop-blur-sm transition-opacity duration-300"></div>
   </div>
 </template>
@@ -162,7 +153,6 @@ const closeSidebarOnMobile = () => {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Safe scrollbar CSS (no Tailwind @apply to avoid 500 error) */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -174,6 +164,6 @@ const closeSidebarOnMobile = () => {
   border-radius: 10px;
 }
 aside:hover .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #3f3f46; /* zinc-700 */
+  background: #3f3f46; 
 }
 </style>

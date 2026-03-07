@@ -17,7 +17,6 @@ const tableData = [
 
 <template>
   <div class="space-y-8">
-    <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <div v-for="stat in stats" class="bg-white dark:bg-[#18181b] p-6 rounded-xl border border-gray-200 dark:border-zinc-800">
         <div class="flex justify-between items-start mb-4">
@@ -33,7 +32,6 @@ const tableData = [
       </div>
     </div>
 
-    <!-- Chart Placeholder (Simplified for logic) -->
     <div class="bg-white dark:bg-[#18181b] p-6 rounded-xl border border-gray-200 dark:border-zinc-800 h-80 flex flex-col">
        <div class="flex justify-between items-center mb-8">
           <div>
@@ -46,12 +44,10 @@ const tableData = [
           </div>
        </div>
        <div class="flex-1 flex items-end gap-2 px-2">
-          <!-- Simple CSS bars to simulate a chart -->
           <div v-for="i in 20" :key="i" :style="{ height: `${Math.random() * 100}%` }" class="flex-1 bg-blue-600/20 rounded-t-sm border-t border-blue-500"></div>
        </div>
     </div>
 
-    <!-- Table Section -->
   <div class="bg-white dark:bg-[#18181b] rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">

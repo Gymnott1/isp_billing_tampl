@@ -1,8 +1,5 @@
 @import "tailwindcss";
 @variant dark (&:where(.dark, .dark *));
-
-/* 1. Root colors for instant load */
-
 :root {
     background-color: #f9fafb;
     color: #09090b;
@@ -21,23 +18,13 @@ html.dark {
     color-scheme: dark;
 }
 
-
-/* 2. THE SECRET FOR SMOOTHNESS */
-
-
-/* We target ONLY color properties. This prevents layout "shaking" */
-
 *,
 *::before,
 *::after {
     transition-property: background-color, border-color, color, fill, stroke;
     transition-duration: 500ms;
-    /* Slightly longer for a more elegant feel */
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
-/* 3. Disable transitions during page load to prevent refresh flickering */
 
 .preload *,
 .preload {

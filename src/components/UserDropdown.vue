@@ -19,17 +19,14 @@ const emit = defineEmits(['close'])
     </div>
     
     <div class="p-1.5">
-      <!-- LINK TO ACCOUNT -->
       <router-link to="/account" @click="emit('close')" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
         <User :size="16" /> Account
       </router-link>
 
-      <!-- LINK TO BILLING -->
       <router-link to="/billing" @click="emit('close')" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
         <CreditCard :size="16" /> Billing
       </router-link>
 
-      <!-- LINK TO NOTIFICATIONS -->
       <router-link to="/notifications" @click="emit('close')" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors">
         <Bell :size="16" /> Notifications
       </router-link>
