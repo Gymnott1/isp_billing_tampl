@@ -2,5 +2,6 @@
   "recommendations": [
     "Vue.volar",
     "prettier.prettier-vscode"
+
   ]
 }

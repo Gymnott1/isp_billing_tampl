@@ -1,7 +1,20 @@
-<script setup></script>
+<script setup>
+import MainLayout from './layouts/MainLayout.vue'
+</script>
 
 <template>
-  <h1 class="bg-gray-500 text-white p-5">Hello Tailwind CSS!</h1>
+  <MainLayout />
 </template>
 
-<style scoped></style>
+<style>
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; 
+}
+</style>
