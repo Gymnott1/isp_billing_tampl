@@ -62,14 +62,37 @@ const processedTabs = computed(() => {
   }))
 })
 
+const displayRows = computed(() => {
+  let rows = [...(activeTabData.value?.rows || [])]
+  if (!sortKey.value || !activeTabData.value?.headers) return rows
+
+  const columnIndex = activeTabData.value.headers.indexOf(sortKey.value)
+  
+  if (columnIndex === -1 || sortKey.value === 'Action') return rows
+
+  return rows.sort((a, b) => {
+    const valA = a[columnIndex] ? String(a[columnIndex]).toLowerCase() : ''
+    const valB = b[columnIndex] ? String(b[columnIndex]).toLowerCase() : ''
+    
+    if (sortOrder.value === 'asc') {
+      return valA.localeCompare(valB)
+    } else {
+      return valB.localeCompare(valA)
+    }
+  })
+})
+
 watch(
   () => props.tabs,
   (newTabs) => {
-    if (newTabs?.length > 0 && !currentTab.value) {
-      currentTab.value = newTabs[0].id
+    if (newTabs && newTabs.length > 0) {
+      const tabExists = newTabs.find(t => t.id === currentTab.value)
+      if (!tabExists) {
+        currentTab.value = newTabs[0].id
+      }
     }
   },
-  { immediate: true } 
+  { immediate: true, deep: true } 
 )
 </script>
 
@@ -118,10 +141,29 @@ watch(
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-50 dark:divide-zinc-800/50">
-           
-              <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors group">
-                <td v-for="(header, index) in activeTabData?.headers" :key="index" class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                  {{ index === 0 ? 'Example Entry' : '-' }}
+              <template v-if="displayRows.length > 0">
+                <tr 
+                  v-for="(row, rowIndex) in displayRows" 
+                  :key="rowIndex"
+                  class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors group"
+                >
+                  <td 
+                    v-for="(cell, cellIndex) in row" 
+                    :key="cellIndex"
+                    class="px-6 py-4 text-zinc-600 dark:text-zinc-400"
+                  >
+                    {{ cell }}
+                  </td>
+
+                  <td v-if="activeTabData.headers.includes('Action')" class="px-6 py-4 text-right">
+                    <button class="text-blue-500 hover:text-blue-600 font-bold">Edit</button>
+                  </td>
+                </tr>
+              </template>
+
+              <tr v-else>
+                <td :colspan="activeTabData?.headers?.length" class="py-20 text-center text-zinc-500 italic">
+                  No records found.
                 </td>
               </tr>
             </tbody>
