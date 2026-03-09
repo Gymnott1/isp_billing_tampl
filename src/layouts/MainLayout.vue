@@ -62,7 +62,7 @@ const closeSidebarOnMobile = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex font-sans overflow-hidden relative">
+  <div class="min-h-screen flex font-sans overflow-hidden relative" style="background-color: var(--background); color: var(--foreground);">
     
     <aside 
       :class="[
@@ -71,7 +71,8 @@ const closeSidebarOnMobile = () => {
         isSidebarOpen ? 'md:w-64' : 'md:w-20',
         isInitialLoad ? '' : 'sidebar-drawer' 
       ]"
-      class="fixed md:static inset-y-0 left-0 z-50 flex flex-col bg-white dark:bg-[#0c0c0e] border-r border-zinc-200 dark:border-zinc-800 w-72 shrink-0"
+      class="fixed md:static inset-y-0 left-0 z-50 flex flex-col border-r w-72 shrink-0"
+      style="background-color: var(--sidebar); border-color: var(--sidebar-border);"
     >
       <div class="h-16 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
         <div class="flex items-center h-12 overflow-hidden">
@@ -131,7 +132,8 @@ const closeSidebarOnMobile = () => {
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-      <header class="h-14 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 md:px-6 bg-white dark:bg-[#0c0c0e] shrink-0 z-10">
+      <header class="h-14 border-b flex items-center justify-between px-4 md:px-6 shrink-0 z-10"
+        style="background-color: var(--background); border-color: var(--border);">
         <div class="flex items-center gap-4">
           <button @click="toggleSidebar" class="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg text-zinc-500 transition-colors">
             <Menu :size="20" />
@@ -159,7 +161,7 @@ const closeSidebarOnMobile = () => {
         </div>
       </header>
 
-      <div class="flex-1 overflow-y-auto p-4 md:p-6 bg-white dark:bg-[#09090b]">
+      <div class="flex-1 overflow-y-auto p-4 md:p-6" style="background-color: var(--background);">
         <router-view />
       </div>
     </main>

@@ -62,14 +62,11 @@ const recentTransactions = [
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
       
       <div v-for="stat in stats" :key="stat.id" 
-        class="bg-white dark:bg-[#18181b] p-5 rounded-xl border border-gray-200 dark:border-zinc-800 flex flex-col justify-between relative overflow-hidden h-32 group"
+        class="p-5 rounded-xl border flex flex-col justify-between relative overflow-hidden h-32 group"
+        style="background-color: var(--card); border-color: var(--border);"
       >
         <div class="relative z-10">
-        
-          <h3 
-            :class="[stat.type === 'revenue' && !showRevenue ? 'blur-md select-none' : '']" 
-            class="text-2xl font-bold transition-all duration-300 tracking-tight"
-          >
+          <h3 :style="{ color: 'var(--foreground)' }" class="text-2xl font-bold tracking-tight">
             {{ stat.value }}
           </h3>
 
@@ -96,10 +93,7 @@ const recentTransactions = [
           </div>
         </div>
 
-        <component 
-          :is="stat.icon" 
-          class="absolute -right-2 -bottom-2 w-20 h-20 text-zinc-100 dark:text-zinc-800/40 -rotate-12 group-hover:rotate-0 group-hover:scale-110 transition-all duration-500" 
-        />
+        <component :is="stat.icon" class="absolute -right-2 -bottom-2 w-20 h-20 opacity-10 rotate-12" />
       </div>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

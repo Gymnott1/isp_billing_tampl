@@ -7,12 +7,6 @@ const themeStore = useThemeStore()
 
 onMounted(() => {
   themeStore.applyTheme(themeStore.theme)
-  
-  if (themeStore.accentColor === 'custom') {
-    themeStore.applyAccentColor(themeStore.customHex, true)
-  } else {
-    themeStore.applyAccentColor(themeStore.accentColor)
-  }
 })
 </script>
 

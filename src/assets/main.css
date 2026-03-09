@@ -1,6 +1,13 @@
 @import "tailwindcss";
+
+/* 1. Setup the Dark Mode Variant */
+
+@variant dark (&:where(.dark, .dark *));
+
+/* 2. Global Reset - Every component will now follow these */
+
 :root {
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
@@ -8,27 +15,50 @@ body {
     color: var(--foreground);
 }
 
-.bg-card {
-    background-color: var(--card);
+
+/* 3. Override Tailwind Classes Globally */
+
+
+/* This forces any element with these classes to use our theme variables */
+
+.bg-white,
+.bg-gray-50,
+.dark\:bg-\[\#09090b\],
+.dark\:bg-\[\#0c0c0e\] {
+    background-color: var(--background) !important;
 }
 
-.text-card-foreground {
-    color: var(--card-foreground);
+aside,
+.dark\:bg-\[\#0c0c0e\] {
+    background-color: var(--sidebar) !important;
+    border-color: var(--sidebar-border) !important;
 }
 
-.border-border {
-    border-color: var(--border);
+header {
+    background-color: var(--background) !important;
+    border-color: var(--border) !important;
 }
 
+
+/* 4. Primary Accent Mapping */
+
+.bg-blue-600,
 .bg-primary {
-    background-color: var(--primary);
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
 }
 
-.text-primary-foreground {
-    color: var(--primary-foreground);
+.text-blue-600,
+.text-primary {
+    color: var(--primary) !important;
 }
 
-aside {
-    background-color: var(--sidebar);
-    border-right: 1px solid var(--sidebar-border);
+
+/* 5. Card Styling */
+
+.bg-white.border,
+.dark\:bg-\[\#18181b\] {
+    background-color: var(--card) !important;
+    border-color: var(--border) !important;
+    color: var(--card-foreground) !important;
 }

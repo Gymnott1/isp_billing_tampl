@@ -1,3 +1,4 @@
+// src/stores/theme.js
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { themes } from './colors'
@@ -10,12 +11,14 @@ export const useThemeStore = defineStore('theme', () => {
         const root = document.documentElement
         const selectedTheme = themes.find(t => t.name === name) || themes[0]
 
-        const activeMode = mode === 'system' ?
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') :
-            mode
+        // Determine actual mode (especially if system)
+        const isDark = mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        const variables = isDark ? selectedTheme.dark : selectedTheme.light
 
-        const variables = selectedTheme[activeMode]
+        // Standard Tailwind Dark Mode class toggle
+        root.classList.toggle('dark', isDark)
 
+        // Inject oklch variables from colors.js
         Object.entries(variables).forEach(([key, value]) => {
             root.style.setProperty(key, value)
         })
@@ -24,7 +27,6 @@ export const useThemeStore = defineStore('theme', () => {
     const applyTheme = (mode) => {
         theme.value = mode
         localStorage.setItem('theme', mode)
-        document.documentElement.classList.toggle('dark', mode === 'dark')
         injectVariables(mode, accentName.value)
     }
 

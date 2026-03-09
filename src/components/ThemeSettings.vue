@@ -1,7 +1,7 @@
 <script setup>
 import { Sun, Moon, Monitor, Check, Info } from 'lucide-vue-next'
 import { useThemeStore } from '@/stores/theme'
-import { themes } from '@/stores/colors' // Import the oklch data
+import { themes } from '@/stores/colors' 
 
 const themeStore = useThemeStore()
 
@@ -15,7 +15,6 @@ const modes = [
 <template>
   <div class="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 p-2 max-w-6xl">
     
-    <!-- Appearance Section -->
     <section>
       <div class="mb-6">
         <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Appearance</h3>
@@ -54,8 +53,6 @@ const modes = [
         </button>
       </div>
     </section>
-
-    <!-- Pro Color Themes Section -->
     <section>
       <div class="mb-6">
         <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Pro Color Themes</h3>
@@ -73,7 +70,6 @@ const modes = [
           ]"
           class="flex items-center gap-4 p-5 border rounded-2xl transition-all bg-white dark:bg-zinc-900 group active:scale-95"
         >
-          <!-- Preview Circle -->
           <div :class="t.color" class="w-8 h-8 rounded-full shadow-lg group-hover:scale-110 transition-transform ring-4 ring-white dark:ring-zinc-800"></div>
           
           <div class="flex flex-col text-left">
@@ -88,7 +84,6 @@ const modes = [
       </div>
     </section>
 
-    <!-- Info Note -->
     <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-start gap-3">
       <Info :size="16" class="text-zinc-400 mt-0.5" />
       <p class="text-[11px] text-zinc-500 leading-relaxed">
@@ -104,7 +99,6 @@ button {
   user-select: none;
 }
 
-/* Custom shadow for the primary color */
 .shadow-primary {
   box-shadow: 0 10px 15px -3px rgba(var(--primary), 0.3);
 }
