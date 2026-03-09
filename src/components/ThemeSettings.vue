@@ -87,7 +87,7 @@ const modes = [
     <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-start gap-3">
       <Info :size="16" class="text-zinc-400 mt-0.5" />
       <p class="text-[11px] text-zinc-500 leading-relaxed">
-        These themes use the <strong class="text-zinc-700 dark:text-zinc-300">OKLCH color space</strong> to ensure perceptually uniform lightness and chroma across both light and dark modes. Settings are automatically saved to your local storage.
+        These themes use the <strong class="text-zinc-700 dark:text-zinc-300">OKLCH color space</strong> to ensure perceptually uniform lightness and chroma across both light and dark modes. Settings are automatically saved.
       </p>
     </div>
   </div>
