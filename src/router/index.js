@@ -144,11 +144,21 @@ const routes = [
                 ],
                 rows: [{
                     data: ['edit', 'Gateway4', '0%', '0 MB / 0 MB', 'Offline'],
-                    details: {
-                        software: { os: 'v.Initial', factory: 'Unknown', heartbeat: '1/1/1970' },
-                        hardware: { platform: 'MIPSBE', arch: '74Kc' },
-                        meta: { uuid: '89968f6b-13e6-4181-a017-f99ff3083ca0' }
-                    }
+                    details: [{
+                            title: 'Software Info',
+                            icon: 'Shield',
+                            items: [
+                                { label: 'OS Version', value: 'v.Initial' },
+                                { label: 'Factory Version', value: 'Unknown' }
+                            ]
+                        },
+                        {
+                            title: 'Meta Tags',
+                            icon: 'Info',
+                            renderType: 'code',
+                            value: 'UUID: 89968f6b-13e6-4181-a017-f99ff3083ca0'
+                        }
+                    ]
                 }]
             }]
         }

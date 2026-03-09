@@ -195,44 +195,46 @@ watch(
                   </td>
                 </tr>
 
-                  <tr v-if="expandedRows.includes(rowIndex) && row.details" class="bg-zinc-50/50 dark:bg-zinc-900/40">
-                  
-                    <td :colspan="activeTabData.headers.length" class="px-8 py-6">
-                      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
-                        
-                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
-                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
-                            <Shield :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Software Info</span>
-                          </div>
-                          <div class="space-y-2 text-xs">
-                            <p class="flex justify-between"><span class="text-zinc-500">OS Version:</span> <span class="font-bold">{{ row.details.software.os }}</span></p>
-                            <p class="flex justify-between"><span class="text-zinc-500">Factory Version:</span> <span>{{ row.details.software.factory }}</span></p>
-                            <p class="flex justify-between"><span class="text-zinc-500">Last Heartbeat:</span> <span>{{ row.details.software.heartbeat }}</span></p>
-                          </div>
-                        </div>
+<!-- Inside src/views/TabsView.vue Template -->
 
-                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
-                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
-                            <Cpu :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Hardware Profile</span>
-                          </div>
-                          <div class="space-y-2 text-xs">
-                            <p class="flex justify-between"><span class="text-zinc-500">Platform:</span> <span>{{ row.details.hardware.platform }}</span></p>
-                            <p class="flex justify-between"><span class="text-zinc-500">Architecture:</span> <span>{{ row.details.hardware.arch }}</span></p>
-                          </div>
-                        </div>
+<tr v-if="expandedRows.includes(rowIndex) && row.details" class="bg-zinc-50/50 dark:bg-zinc-900/40">
+  <td :colspan="activeTabData.headers.length" class="px-8 py-6">
+    
+    <!-- Dynamic Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
+      
+      <div 
+        v-for="(group, gIndex) in row.details" :key="gIndex"
+        class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm"
+      >
+        <!-- Card Header -->
+        <div class="flex items-center gap-2 mb-4 text-zinc-400">
+          <component :is="iconMap[group.icon] || Info" :size="14" />
+          <span class="text-[10px] font-bold uppercase tracking-widest">{{ group.title }}</span>
+        </div>
 
-                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
-                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
-                            <Info :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Meta Tags</span>
-                          </div>
-                          <div class="bg-zinc-100 dark:bg-zinc-800/50 p-2 rounded text-[10px] break-all font-mono text-zinc-500">
-                            UUID: {{ row.details.meta.uuid }}
-                          </div>
-                        </div>
+        <!-- Card Body: Key-Value List -->
+        <div v-if="group.items" class="space-y-2 text-xs">
+          <p v-for="item in group.items" :key="item.label" class="flex justify-between border-b border-zinc-100 dark:border-zinc-800/50 pb-1 last:border-0">
+            <span class="text-zinc-500">{{ item.label }}:</span>
+            <span class="font-bold text-zinc-700 dark:text-zinc-300">{{ item.value }}</span>
+          </p>
+        </div>
 
-                      </div>
-                    </td>
-                  </tr>
+        <!-- Card Body: Code/Mono block -->
+        <div v-else-if="group.renderType === 'code'" class="bg-zinc-100 dark:bg-zinc-800/50 p-2 rounded text-[10px] break-all font-mono text-zinc-500">
+          {{ group.value }}
+        </div>
+        
+        <!-- Card Body: Simple Text -->
+        <div v-else class="text-xs text-zinc-600 dark:text-zinc-400">
+          {{ group.value }}
+        </div>
+      </div>
+
+    </div>
+  </td>
+</tr>
                 </template>
               </tbody>
           </table>
