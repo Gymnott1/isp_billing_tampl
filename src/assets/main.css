@@ -40,16 +40,10 @@ body {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
 }
 
-
-/* Add this to your src/assets/main.css */
-
 :root {
     --primary: 37 99 235;
     /* Default Blue */
 }
-
-
-/* Theme Definitions (Tailwind RGB format) */
 
 .theme-blue {
     --primary: 37 99 235;
@@ -82,9 +76,6 @@ body {
 .theme-zinc {
     --primary: 63 63 70;
 }
-
-
-/* Utility class to use the dynamic color */
 
 .bg-primary {
     background-color: rgb(var(--primary));

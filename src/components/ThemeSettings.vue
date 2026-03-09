@@ -60,7 +60,7 @@ const handleCustomColor = (e) => {
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        <!-- Preset Buttons -->
+        
         <button 
           v-for="opt in presets" :key="opt.id"
           @click="themeStore.applyAccentColor(opt.id)"
@@ -72,7 +72,6 @@ const handleCustomColor = (e) => {
           <Check v-if="themeStore.accentColor === opt.id" :size="14" class="ml-auto text-zinc-400" />
         </button>
 
-        <!-- Custom Color Button -->
         <button 
           @click="colorInput.click()"
           :class="[themeStore.accentColor === 'custom' ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#09090b] ring-zinc-400' : 'border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100']"
@@ -89,7 +88,6 @@ const handleCustomColor = (e) => {
           </span>
           <Pipette :size="14" class="ml-auto text-zinc-400" />
           
-          <!-- Hidden Native Color Picker -->
           <input 
             ref="colorInput"
             type="color" 

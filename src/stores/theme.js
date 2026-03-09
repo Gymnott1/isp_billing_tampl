@@ -14,14 +14,13 @@ export const useThemeStore = defineStore('theme', () => {
         theme.value = mode
     }
 
-    // Helper to convert Hex to RGB for Tailwind
     const hexToRgb = (hex) => {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}` : null;
     }
 
     const applyAccentColor = (color, isCustom = false) => {
-        // 1. Clear previous styles
+
         document.documentElement.classList.forEach(cls => {
             if (cls.startsWith('theme-')) document.documentElement.classList.remove(cls)
         })
