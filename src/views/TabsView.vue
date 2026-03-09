@@ -5,7 +5,7 @@ import Tabs from '@/components/Tabs.vue'
 import { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
   Ticket, Receipt, Settings, Activity, Plus, Download, 
-  ChevronUp, ChevronDown, LayoutGrid, FileText
+  ChevronUp, ChevronDown, LayoutGrid, FileText, ChevronRight, Cpu, Shield
 } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -19,12 +19,24 @@ const props = defineProps({
 const currentTab = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
+const expandedRows = ref([])
 
 const iconMap = { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
   Ticket, Receipt, Settings, Activity, Plus, 
   Download, LayoutGrid, FileText
 }
+
+const toggleRow = (index) => {
+  if (expandedRows.value.includes(index)) {
+    expandedRows.value = expandedRows.value.filter(i => i !== index)
+  } else {
+    expandedRows.value.push(index)
+  }
+}
+
+
+
 
 const handleAction = (command) => {
   console.log('Action triggered:', command)
@@ -73,18 +85,19 @@ const displayRows = computed(() => {
   if (!sortKey.value || !activeTabData.value?.headers) return rows
 
   const columnIndex = activeTabData.value.headers.indexOf(sortKey.value)
-  
   if (columnIndex === -1 || sortKey.value === 'Action') return rows
 
   return rows.sort((a, b) => {
-    const valA = a[columnIndex] ? String(a[columnIndex]).toLowerCase() : ''
-    const valB = b[columnIndex] ? String(b[columnIndex]).toLowerCase() : ''
+    // Determine if we are looking at { data: [] } or just []
+    const rawA = a.data ? a.data[columnIndex] : a[columnIndex]
+    const rawB = b.data ? b.data[columnIndex] : b[columnIndex]
     
-    if (sortOrder.value === 'asc') {
-      return valA.localeCompare(valB)
-    } else {
-      return valB.localeCompare(valA)
-    }
+    const valA = rawA ? String(rawA).toLowerCase() : ''
+    const valB = rawB ? String(rawB).toLowerCase() : ''
+    
+    return sortOrder.value === 'asc' 
+      ? valA.localeCompare(valB) 
+      : valB.localeCompare(valA)
   })
 })
 
@@ -147,39 +160,81 @@ watch(
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-50 dark:divide-zinc-800/50">
-              <template v-if="displayRows.length > 0">
-                <tr 
-                  v-for="(row, rowIndex) in displayRows" 
-                  :key="rowIndex"
-                  class="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors group"
-                >
+              <template v-for="(row, rowIndex) in displayRows" :key="rowIndex">
+                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/10 transition-colors group border-b border-zinc-100 dark:border-zinc-800/50">
+                  
                   <td 
-                    v-for="(cell, cellIndex) in row" 
-                    :key="cellIndex"
-                    class="px-6 py-4 text-zinc-600 dark:text-zinc-400"
+                    v-for="(header, hIndex) in activeTabData.headers" 
+                    :key="hIndex" 
+                    class="px-6 py-4 whitespace-nowrap"
                   >
-                    {{ cell }}
-                  </td>
+                    <template v-if="header === 'Action'">
+                        <div class="flex items-center gap-4">
+                          <button 
+                            v-if="activeTabData.isExpandable" 
+                            @click="toggleRow(rowIndex)" 
+                            class="p-1 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded transition-colors text-zinc-400"
+                          >
+                            <ChevronDown v-if="expandedRows.includes(rowIndex)" :size="16" />
+                            <ChevronRight v-else :size="16" />
+                          </button>
 
-                  <td v-if="activeTabData.headers.includes('Action')" class="px-6 py-4 text-right">
-                    <button class="text-blue-500 hover:text-blue-600 font-bold">Edit</button>
-                  </td>
-                  <td v-if="activeTabData.headers.includes('Action')" class="px-6 py-4 text-right">
-                    <RowActions 
-                      :actions="activeTabData.rowActions" 
-                      :rowData="row"
-                      @action="handleRowAction" 
-                    />
+                          <RowActions 
+                            :actions="activeTabData.rowActions" 
+                            :rowData="row.data || row" 
+                            @action="handleRowAction"
+                          />
+                        </div>
+                    </template>
+
+                    <template v-else>
+                        <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                          {{ (row.data || row)[hIndex] }}
+                        </span>
+                    </template>
                   </td>
                 </tr>
-              </template>
 
-              <tr v-else>
-                <td :colspan="activeTabData?.headers?.length" class="py-20 text-center text-zinc-500 italic">
-                  No records found.
-                </td>
-              </tr>
-            </tbody>
+                  <tr v-if="expandedRows.includes(rowIndex) && row.details" class="bg-zinc-50/50 dark:bg-zinc-900/40">
+                  
+                    <td :colspan="activeTabData.headers.length" class="px-8 py-6">
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
+                        
+                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
+                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
+                            <Shield :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Software Info</span>
+                          </div>
+                          <div class="space-y-2 text-xs">
+                            <p class="flex justify-between"><span class="text-zinc-500">OS Version:</span> <span class="font-bold">{{ row.details.software.os }}</span></p>
+                            <p class="flex justify-between"><span class="text-zinc-500">Factory Version:</span> <span>{{ row.details.software.factory }}</span></p>
+                            <p class="flex justify-between"><span class="text-zinc-500">Last Heartbeat:</span> <span>{{ row.details.software.heartbeat }}</span></p>
+                          </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
+                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
+                            <Cpu :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Hardware Profile</span>
+                          </div>
+                          <div class="space-y-2 text-xs">
+                            <p class="flex justify-between"><span class="text-zinc-500">Platform:</span> <span>{{ row.details.hardware.platform }}</span></p>
+                            <p class="flex justify-between"><span class="text-zinc-500">Architecture:</span> <span>{{ row.details.hardware.arch }}</span></p>
+                          </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl">
+                          <div class="flex items-center gap-2 mb-4 text-zinc-400">
+                            <Info :size="14" /> <span class="text-[10px] font-bold uppercase tracking-widest">Meta Tags</span>
+                          </div>
+                          <div class="bg-zinc-100 dark:bg-zinc-800/50 p-2 rounded text-[10px] break-all font-mono text-zinc-500">
+                            UUID: {{ row.details.meta.uuid }}
+                          </div>
+                        </div>
+
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
           </table>
         </div>
 

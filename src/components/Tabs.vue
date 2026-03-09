@@ -45,7 +45,7 @@ const handleTabClick = (id) => {
       </button>
     </div>
 
-    <div class="bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm">
+    <div class="bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-visible shadow-sm">
       
       <div class="p-4 border-b border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h3 class="text-sm font-bold text-zinc-700 dark:text-zinc-300 capitalize">

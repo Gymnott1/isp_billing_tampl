@@ -17,6 +17,7 @@ const routes = [
                     iconName: 'Radio',
                     count: 2,
                     type: 'table',
+                    isExpandable: false,
                     headers: ['User', 'Address / MAC', 'Mikrotik', 'Status / Expiry', 'Action'],
                     rowActions: [
                         { label: 'View Details', iconName: 'Eye', command: 'view' },
@@ -32,6 +33,7 @@ const routes = [
                 {
                     id: 'pppoe',
                     label: 'PPPoE',
+                    isExpandable: false,
                     iconName: 'HardDrive',
                     count: 1,
                     type: 'table',
@@ -53,6 +55,7 @@ const routes = [
                     label: 'Active Sessions',
                     iconName: 'Zap',
                     count: 3,
+                    isExpandable: false,
                     type: 'table',
                     headers: ['User', 'Address', 'Uptime', 'Action'],
                     rows: [
@@ -66,6 +69,7 @@ const routes = [
                     label: 'Registered Users',
                     iconName: 'Users',
                     count: 2,
+                    isExpandable: false,
                     type: 'table',
                     headers: ['Username', 'Profile', 'Limit', 'Action'],
                     rows: [
@@ -78,6 +82,7 @@ const routes = [
                     label: 'Hosts',
                     iconName: 'Laptop',
                     count: 1,
+                    isExpandable: false,
                     type: 'table',
                     headers: ['MAC Address', 'IP Address', 'Status'],
                     rows: [
@@ -96,16 +101,19 @@ const routes = [
                     id: 'active',
                     label: 'Active',
                     type: 'table',
+                    isExpandable: false,
                     headers: ['User', 'IP', 'Uptime'],
                     actions: [{ label: 'Add', iconName: 'Plus', command: 'add' }]
                 },
                 {
                     id: 'stats',
+                    isExpandable: false,
                     label: 'Statistics',
                     type: 'cards',
                 },
                 {
                     id: 'docs',
+                    isExpandable: false,
                     label: 'Help',
                     type: 'content',
                 }
@@ -115,7 +123,36 @@ const routes = [
     // { path: '/vouchers', component: GeneralView, props: { title: 'Voucher System' } },
     { path: '/pppoe', component: GeneralView, props: { title: 'PPPoE Connections' } },
     { path: '/payments', component: GeneralView, props: { title: 'Payment History' } },
-    { path: '/mikrotik', component: GeneralView, props: { title: 'Mikrotik Settings' } },
+    // { path: '/mikrotik', component: GeneralView, props: { title: 'Mikrotik Settings' } },
+
+    {
+        path: '/mikrotik',
+        component: TabsView,
+        props: {
+            title: 'Mikrotik Instances',
+            tabs: [{
+                id: 'routers',
+                label: 'Gateways',
+                iconName: 'HardDrive',
+                type: 'table',
+                isExpandable: true,
+                headers: ['Action', 'Device Identity', 'CPU Load', 'Memory / Disk', 'System Status'],
+                rowActions: [
+                    { label: 'View Details', iconName: 'Eye', command: 'view' },
+                    { label: 'Modify Profile', iconName: 'Edit', command: 'edit', color: 'blue' },
+                    { label: 'Delete Router', iconName: 'Trash2', command: 'delete', color: 'red' }
+                ],
+                rows: [{
+                    data: ['edit', 'Gateway4', '0%', '0 MB / 0 MB', 'Offline'],
+                    details: {
+                        software: { os: 'v.Initial', factory: 'Unknown', heartbeat: '1/1/1970' },
+                        hardware: { platform: 'MIPSBE', arch: '74Kc' },
+                        meta: { uuid: '89968f6b-13e6-4181-a017-f99ff3083ca0' }
+                    }
+                }]
+            }]
+        }
+    },
     { path: '/settings', component: GeneralView, props: { title: 'Settings' } },
     { path: '/account', component: GeneralView, props: { title: 'Account Profile' } },
     { path: '/billing', component: GeneralView, props: { title: 'Billing & Subscriptions' } },
