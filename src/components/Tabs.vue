@@ -5,7 +5,7 @@ import { RefreshCcw, Search, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRi
 const props = defineProps({
   tabs: {
     type: Array,
-    required: true, // Example: [{ id: 'hotspot', label: 'HOTSPOT', count: 0, icon: Wifi }]
+    required: true,
   },
   showToolbar: { type: Boolean, default: true },
   showFooter: { type: Boolean, default: true },
@@ -17,7 +17,7 @@ const props = defineProps({
   activeTab: String,
     actions: {
     type: Array,
-    default: () => [] // Example: [{ label: 'Add User', icon: Plus, command: 'add' }]
+    default: () => [] 
   }
 })
 

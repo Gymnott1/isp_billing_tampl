@@ -37,7 +37,6 @@ const totalPages = computed(() => {
 })
 
 const paginatedRows = computed(() => {
-  // Use displayRows (the sorted/searched list) to slice
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
   return displayRows.value.slice(start, end)
@@ -71,7 +70,6 @@ const toggleAll = () => {
 
 const handleBulkDelete = () => {
   console.log('Deleting indices:', selectedRows.value)
-  // Logic to delete from your data source
   selectedRows.value = [] 
 }
 
@@ -81,7 +79,6 @@ const handleAction = (command) => {
 
 const handleRowAction = (command, rowData) => {
   console.log(`Executing ${command} on row:`, rowData)
-  // Example: if (command === 'delete') openDeleteModal(rowData)
 }
 
 const handleRefresh = () => {
@@ -125,7 +122,6 @@ const displayRows = computed(() => {
   if (columnIndex === -1 || sortKey.value === 'Action') return rows
 
   return rows.sort((a, b) => {
-    // Determine if we are looking at { data: [] } or just []
     const rawA = a.data ? a.data[columnIndex] : a[columnIndex]
     const rawB = b.data ? b.data[columnIndex] : b[columnIndex]
     
