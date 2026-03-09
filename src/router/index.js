@@ -139,6 +139,11 @@ const routes = [
                 isExpandable: true,
                 isSelectable: true,
                 headers: ['Action', 'Device Identity', 'CPU Load', 'Memory / Disk', 'System Status'],
+                rowActions: [
+                    { label: 'View Details', iconName: 'Eye', command: 'view' },
+                    { label: 'Modify Profile', iconName: 'Edit', command: 'edit', color: 'blue' },
+                    { label: 'Delete Account', iconName: 'Trash2', command: 'delete', color: 'red' }
+                ],
                 rows: [
                     // ROW 1: Standard Offline Gateway
                     {
