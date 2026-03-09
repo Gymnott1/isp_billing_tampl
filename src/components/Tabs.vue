@@ -8,10 +8,14 @@ const props = defineProps({
     required: true, // Example: [{ id: 'hotspot', label: 'HOTSPOT', count: 0, icon: Wifi }]
   },
   title: String,
-  activeTab: String
+  activeTab: String,
+    actions: {
+    type: Array,
+    default: () => [] // Example: [{ label: 'Add User', icon: Plus, command: 'add' }]
+  }
 })
 
-const emit = defineEmits(['update:activeTab', 'refresh', 'search'])
+const emit = defineEmits(['update:activeTab', 'refresh', 'search', 'action'])
 
 const searchQuery = ref('')
 
@@ -22,7 +26,6 @@ const handleTabClick = (id) => {
 
 <template>
   <div class="space-y-4">
-    <!-- 1. Top Navigation Tabs -->
     <div class="flex items-center gap-1 border-b border-zinc-200 dark:border-zinc-800">
       <button 
         v-for="tab in tabs" 
@@ -41,23 +44,28 @@ const handleTabClick = (id) => {
       </button>
     </div>
 
-    <!-- 2. Main Container -->
     <div class="bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden shadow-sm">
-      
-      <!-- Header Row -->
       <div class="p-4 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
         <h3 class="text-sm font-medium text-zinc-600 dark:text-zinc-400 capitalize">
           Active {{ activeTab }} customers
         </h3>
-        <button 
-          @click="emit('refresh')"
-          class="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold transition-colors"
-        >
-          <RefreshCcw :size="14" /> Refresh
-        </button>
+        
+        <div class="flex items-center gap-2">
+          <button 
+            v-for="btn in actions" :key="btn.label"
+            @click="$emit('action', btn.command)"
+            class="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 ..."
+          >
+            <component :is="btn.icon" :size="14" />
+            {{ btn.label }}
+          </button>
+          
+          <button @click="$emit('refresh')" class="bg-blue-600 ...">
+            <RefreshCcw :size="14" /> Refresh
+          </button>
+        </div>
       </div>
 
-      <!-- Controls Row (Search & Entries) -->
       <div class="p-4 flex flex-col sm:row items-center justify-between gap-4">
         <div class="flex items-center gap-2 text-xs text-zinc-500">
           <select class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 py-1 outline-none">
@@ -80,10 +88,9 @@ const handleTabClick = (id) => {
         </div>
       </div>
 
-      <!-- 3. Dynamic Content Slot -->
       <div class="min-h-[300px]">
         <slot :name="activeTab">
-          <!-- Default Empty State if no slot content provided -->
+         
           <div class="flex flex-col items-center justify-center py-20 text-zinc-400">
             <div class="w-12 h-12 rounded-full border-2 border-zinc-100 dark:border-zinc-800 flex items-center justify-center mb-4">
               <Info :size="20" />
@@ -93,7 +100,6 @@ const handleTabClick = (id) => {
         </slot>
       </div>
 
-      <!-- 4. Footer / Pagination -->
       <div class="p-4 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/20 flex flex-col items-center gap-4">
         <div class="flex items-center gap-1">
           <button class="p-2 border border-zinc-200 dark:border-zinc-800 rounded hover:bg-white dark:hover:bg-zinc-800 text-zinc-400 transition-colors"><ChevronsLeft :size="14"/></button>

@@ -1,27 +1,52 @@
 <script setup>
 import { ref, watch, computed, markRaw } from 'vue'
 import Tabs from '@/components/Tabs.vue'
-// Import all icons you intend to use in the router
 import { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
-  Ticket, Receipt, Settings, Activity 
+  Ticket, Receipt, Settings, Activity , Plus, Download
 } from 'lucide-vue-next'
 
 const props = defineProps({
   title: String,
-  tabs: {
-    type: Array,
-    default: () => []
-  }
+  tabs: Array
 })
 
-// 1. Map string names to Lucide components
+
+const tableActions = [
+  { label: 'Add New', icon: markRaw(Plus), command: 'add' },
+  { label: 'Export', icon: markRaw(Download), command: 'export' }
+]
+
+
+const handleAction = (command) => {
+  console.log('Button clicked:', command)
+  // Logic for add or export goes here
+}
+
+const currentTab = ref(props.tabs[0]?.id || '')
+
+const handleRefresh = () => {
+  console.log('Refreshing data...')
+}
+
 const iconMap = { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
   Ticket, Receipt, Settings, Activity 
 }
 
-// 2. Process tabs reactively. This updates whenever props.tabs changes.
+const activeTabData = computed(() => {
+  const tab = props.tabs.find(t => t.id === currentTab.value)
+  if (!tab) return null
+  
+  return {
+    ...tab,
+    actions: (tab.actions || []).map(a => ({
+      ...a,
+      icon: markRaw(iconMap[a.iconName] || Info)
+    }))
+  }
+})
+
 const processedTabs = computed(() => {
   return props.tabs.map(tab => ({
     ...tab,
@@ -29,11 +54,7 @@ const processedTabs = computed(() => {
   }))
 })
 
-// 3. Track the current active tab
-const currentTab = ref('')
 
-// 4. CRUCIAL: Watch for changes in tabs to reset the active tab
-// This runs every time you click a new menu item in the sidebar
 watch(
   () => props.tabs,
   (newTabs) => {
@@ -41,35 +62,39 @@ watch(
       currentTab.value = newTabs[0].id
     }
   },
-  { immediate: true } // Run immediately on load too
+  { immediate: true } 
 )
 </script>
 
 <template>
-  <div class="p-4 md:p-8 space-y-6 max-w-[1600px] mx-auto animate-in fade-in duration-500">
+  <div class="p-4 md:p-8 space-y-6">
     <h1 class="text-xl font-bold">{{ title }}</h1>
 
     <Tabs 
       :tabs="processedTabs" 
       v-model:activeTab="currentTab"
+      :actions="activeTabData?.actions" 
     >
-      <!-- Dynamic Slot Rendering -->
-      <template v-for="tab in props.tabs" :key="tab.id" #[tab.id]>
+      <template #[currentTab]>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
               <tr class="border-b border-zinc-100 dark:border-zinc-800 text-zinc-400 uppercase font-bold tracking-wider">
-                <th class="px-6 py-4">User</th>
-                <th class="px-6 py-4">Address / MAC</th>
-                <th class="px-6 py-4">Mikrotik</th>
-                <th class="px-6 py-4">Status / Expiry</th>
-                <th class="px-6 py-4">Used Data</th>
-                <th class="px-6 py-4">Session Uptime</th>
-                <th class="px-6 py-4 text-right">Action</th>
+                
+                <th v-for="header in activeTabData?.headers" :key="header" class="px-6 py-4">
+                  {{ header }}
+                </th>
               </tr>
             </thead>
             <tbody>
-              <!-- Empty state is handled inside Tabs.vue slot default -->
+              <tr v-if="!activeTabData" class="text-center text-zinc-500">
+                <td :colspan="activeTabData?.headers.length || 1" class="py-6">No data available</td>
+              </tr>
+              <tr v-else class="border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                <td class="px-6 py-4">Example User</td>
+                <td class="px-6 py-4">Example Service</td>
+                </tr>
+           
             </tbody>
           </table>
         </div>

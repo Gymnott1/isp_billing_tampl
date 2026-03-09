@@ -11,8 +11,8 @@ const routes = [
         props: {
             title: 'Active Customers',
             tabs: [
-                { id: 'hotspot', label: 'HOTSPOT', iconName: 'Radio', count: 0 },
-                { id: 'pppoe', label: 'PPPoE', iconName: 'HardDrive', count: 0 }
+                { id: 'hotspot', label: 'HOTSPOT', iconName: 'Radio', count: 0, headers: ['User', 'MAC Address', 'Uptime', 'Action'], actions: [{ label: 'Add Hotspot User', iconName: 'Plus', command: 'add-hs' }] },
+                { id: 'pppoe', label: 'PPPoE', iconName: 'HardDrive', count: 0, headers: ['User', 'Service', 'IP Address', 'Action'], actions: [{ label: 'Add PPPoE User', iconName: 'Plus', command: 'add-pppoe' }] }
             ]
         }
     },
@@ -28,7 +28,6 @@ const routes = [
             ]
         }
     },
-    // Keep others as GeneralView until you're ready to add tabs to them
     { path: '/vouchers', component: GeneralView, props: { title: 'Voucher System' } },
     { path: '/pppoe', component: GeneralView, props: { title: 'PPPoE Connections' } },
     { path: '/payments', component: GeneralView, props: { title: 'Payment History' } },
