@@ -18,6 +18,11 @@ const routes = [
                     count: 2,
                     type: 'table',
                     headers: ['User', 'Address / MAC', 'Mikrotik', 'Status / Expiry', 'Action'],
+                    rowActions: [
+                        { label: 'View Details', iconName: 'Eye', command: 'view' },
+                        { label: 'Modify Profile', iconName: 'Edit', command: 'edit', color: 'blue' },
+                        { label: 'Delete Account', iconName: 'Trash2', command: 'delete', color: 'red' }
+                    ],
                     rows: [
                         ['John Doe', '192.168.88.10', 'Main_Router', 'Active / 2h remaining'],
                         ['Jane Smith', '192.168.88.15', 'Main_Router', 'Active / 5h remaining']

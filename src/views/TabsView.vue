@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch, computed, markRaw } from 'vue'
+import RowActions from '@/components/RowActions.vue'
 import Tabs from '@/components/Tabs.vue'
 import { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
@@ -27,6 +28,11 @@ const iconMap = {
 
 const handleAction = (command) => {
   console.log('Action triggered:', command)
+}
+
+const handleRowAction = (command, rowData) => {
+  console.log(`Executing ${command} on row:`, rowData)
+  // Example: if (command === 'delete') openDeleteModal(rowData)
 }
 
 const handleRefresh = () => {
@@ -157,6 +163,13 @@ watch(
 
                   <td v-if="activeTabData.headers.includes('Action')" class="px-6 py-4 text-right">
                     <button class="text-blue-500 hover:text-blue-600 font-bold">Edit</button>
+                  </td>
+                  <td v-if="activeTabData.headers.includes('Action')" class="px-6 py-4 text-right">
+                    <RowActions 
+                      :actions="activeTabData.rowActions" 
+                      :rowData="row"
+                      @action="handleRowAction" 
+                    />
                   </td>
                 </tr>
               </template>
