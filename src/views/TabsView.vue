@@ -3,13 +3,16 @@ import { ref, watch, computed, markRaw } from 'vue'
 import Tabs from '@/components/Tabs.vue'
 import { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
-  Ticket, Receipt, Settings, Activity , Plus, Download
+  Ticket, Receipt, Settings, Activity , Plus, Download, ChevronUp, ChevronDown 
 } from 'lucide-vue-next'
 
 const props = defineProps({
   title: String,
   tabs: Array
 })
+
+const sortKey = ref('')
+const sortOrder = ref('asc')
 
 
 const tableActions = [
@@ -27,6 +30,16 @@ const currentTab = ref(props.tabs[0]?.id || '')
 
 const handleRefresh = () => {
   console.log('Refreshing data...')
+}
+
+const handleSort = (label) => {
+  if (sortKey.value === label) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortKey.value = label
+    sortOrder.value = 'asc'
+  }
+  console.log(`Sorting by ${label} in ${sortOrder.value} order`)
 }
 
 const iconMap = { 
@@ -80,9 +93,36 @@ watch(
           <table class="w-full text-left text-xs">
             <thead>
               <tr class="border-b border-zinc-100 dark:border-zinc-800 text-zinc-400 uppercase font-bold tracking-wider">
-                
-                <th v-for="header in activeTabData?.headers" :key="header" class="px-6 py-4">
-                  {{ header }}
+                <th 
+                  v-for="header in activeTabData?.headers" 
+                  :key="header" 
+                  @click="handleSort(header)"
+                  class="px-6 py-4 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors group"
+                >
+                  <div class="flex items-center gap-2">
+                    <span>{{ header }}</span>
+                    
+                    <div class="flex flex-col -space-y-1">
+                      <ChevronUp 
+                        :size="12" 
+                        :class="[
+                          sortKey === header && sortOrder === 'asc' 
+                            ? 'text-blue-500 opacity-100' 
+                            : 'text-zinc-500 opacity-0 group-hover:opacity-50'
+                        ]" 
+                        class="transition-all"
+                      />
+                      <ChevronDown 
+                        :size="12" 
+                        :class="[
+                          sortKey === header && sortOrder === 'desc' 
+                            ? 'text-blue-500 opacity-100' 
+                            : 'text-zinc-500 opacity-0 group-hover:opacity-50'
+                        ]" 
+                        class="transition-all"
+                      />
+                    </div>
+                  </div>
                 </th>
               </tr>
             </thead>
@@ -93,7 +133,7 @@ watch(
               <tr v-else class="border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
                 <td class="px-6 py-4">Example User</td>
                 <td class="px-6 py-4">Example Service</td>
-                </tr>
+              </tr>
            
             </tbody>
           </table>
