@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import GeneralView from '../views/GeneralView.vue'
 import TabsView from '../views/TabsView.vue'
+import { markRaw } from 'vue'
+import ThemeSettings from '@/components/ThemeSettings.vue'
 
 const routes = [
     { path: '/', component: Dashboard },
@@ -130,9 +132,7 @@ const routes = [
                     { label: 'Modify Profile', iconName: 'Edit', command: 'edit', color: 'blue' },
                     { label: 'Delete Account', iconName: 'Trash2', command: 'delete', color: 'red' }
                 ],
-                rows: [
-                    // ROW 1: Standard Offline Gateway
-                    {
+                rows: [{
                         data: ['edit', 'Gateway4', '0%', '12 MB / 128 MB', 'Offline'],
                         details: [{
                                 title: 'Software Info',
@@ -151,7 +151,6 @@ const routes = [
                             }
                         ]
                     },
-                    // ROW 2: High Performance Core Router (X86)
                     {
                         data: ['edit', 'Core-Router-X86', '45%', '2.4 GB / 16 GB', 'Online'],
                         details: [{
@@ -179,7 +178,6 @@ const routes = [
                             }
                         ]
                     },
-                    // ROW 3: Sector Tower Access Point
                     {
                         data: ['edit', 'West-Tower-AP', '12%', '64 MB / 256 MB', 'Online'],
                         details: [{
@@ -201,7 +199,6 @@ const routes = [
                             }
                         ]
                     },
-                    // ROW 4: Backup CCR (Standby)
                     {
                         data: ['edit', 'CCR-Backup-01', '2%', '512 MB / 2 GB', 'Standby'],
                         details: [{
@@ -221,7 +218,34 @@ const routes = [
             }]
         }
     },
-    { path: '/settings', component: GeneralView, props: { title: 'Settings' } },
+    {
+        path: '/settings',
+        component: TabsView,
+        props: {
+            title: 'Settings',
+            tabs: [{
+                    id: 'general',
+                    label: 'General',
+                    iconName: 'Settings',
+                    type: 'content',
+                    contentData: {
+                        title: 'General Settings',
+                        subtitle: 'Manage your global instance preferences.',
+                        icon: 'Settings',
+                        body: 'Configuration for ISP Name, Timezone, and currency symbols.'
+                    }
+                },
+                {
+                    id: 'themes',
+                    label: 'Themes',
+                    iconName: 'Sun',
+                    type: 'component',
+                    component: markRaw(ThemeSettings),
+                    props: { currentTheme: 'dark' }
+                }
+            ]
+        }
+    },
     { path: '/account', component: GeneralView, props: { title: 'Account Profile' } },
     { path: '/billing', component: GeneralView, props: { title: 'Billing & Subscriptions' } },
     { path: '/notifications', component: GeneralView, props: { title: 'Notification Settings' } },

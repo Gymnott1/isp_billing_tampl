@@ -326,7 +326,7 @@ watch(
           </div>
         </div>
 
-        <!-- Content/Document Layout -->
+        <!-- Document Layout -->
         <div v-else-if="activeTabData?.type === 'content'" class="p-8 max-w-4xl">
           <div class="flex items-center gap-4 mb-6">
              <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
@@ -340,6 +340,14 @@ watch(
           <div class="space-y-4 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
             <p>This section is designed for long-form content, instructions, or detailed settings that don't fit into a grid or table format.</p>
           </div>
+        </div>
+
+        <!-- CUSTOM COMPONENT INJECTION -->
+        <div v-else-if="activeTabData?.type === 'component'" class="p-6 md:p-10">
+          <component 
+            :is="activeTabData.component" 
+            v-bind="activeTabData.props" 
+          />
         </div>
 
         <!-- Default State -->
