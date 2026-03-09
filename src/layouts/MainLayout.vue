@@ -2,11 +2,13 @@
 import { ref, onMounted } from 'vue'
 import SidebarItem from '@/components/SidebarItem.vue'
 import UserDropdown from '@/components/UserDropdown.vue'
+import { useThemeStore } from '@/stores/theme'
 import { 
   LayoutDashboard, Users, Radio, Ticket, Receipt, HardDrive,
   Settings, Menu, Sun, Moon, X, Mail
 } from 'lucide-vue-next'
 
+const themeStore = useThemeStore() 
 const isDark = ref(false)
 const isSidebarOpen = ref(true) 
 const isUserMenuOpen = ref(false)
@@ -31,8 +33,6 @@ const toggleTheme = () => {
 }
 
 onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark')
-
   const savedSidebar = localStorage.getItem('sidebarStatus')
   if (window.innerWidth < 768) {
     isSidebarOpen.value = false
@@ -142,8 +142,12 @@ const closeSidebarOnMobile = () => {
         </div>
         
         <div class="flex items-center gap-2 md:gap-4 shrink-0">
-          <button @click="toggleTheme" class="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-all active:scale-90">
-            <Sun v-if="isDark" :size="18" />
+
+          <button 
+            @click="themeStore.applyTheme(themeStore.theme === 'dark' ? 'light' : 'dark')" 
+            class="p-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-all active:scale-90"
+          >
+            <Sun v-if="themeStore.theme === 'dark'" :size="18" />
             <Moon v-else :size="18" />
           </button>
           

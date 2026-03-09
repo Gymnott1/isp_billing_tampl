@@ -1,20 +1,15 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useThemeStore } from '@/stores/theme'
 import MainLayout from './layouts/MainLayout.vue'
+
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  themeStore.applyTheme(themeStore.theme)
+})
 </script>
 
 <template>
   <MainLayout />
 </template>
-
-<style>
-@import "tailwindcss";
-
-:root {
-  color-scheme: light dark;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif; 
-}
-</style>

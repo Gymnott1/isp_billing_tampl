@@ -326,7 +326,7 @@ watch(
           </div>
         </div>
 
-        <!-- Document Layout -->
+        <!--Content/ Document Layout -->
         <div v-else-if="activeTabData?.type === 'content'" class="p-8 max-w-4xl">
           <div class="flex items-center gap-4 mb-6">
              <div class="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center">
