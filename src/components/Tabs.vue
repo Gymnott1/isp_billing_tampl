@@ -36,6 +36,11 @@ const handleTabClick = (id) => {
       <button 
         v-for="tab in tabs" :key="tab.id"
         @click="handleTabClick(tab.id)"
+        :style="activeTab === tab.id ? { 
+          borderBottomColor: 'var(--primary)', 
+          color: 'var(--primary)',
+          backgroundColor: 'color-mix(in srgb, var(--primary), transparent 90%)'
+        } : { color: 'var(--muted-foreground)' }"
         :class="[
           activeTab === tab.id 
             ? 'border-primary text-primary bg-blue-50/30 dark:bg-blue-600/10' 
@@ -97,7 +102,8 @@ const handleTabClick = (id) => {
             v-model="searchQuery"
             @input="$emit('search', searchQuery)"
             type="text" 
-            placeholder="Search customers..." 
+            style="background-color: var(--input); border-color: var(--border); color: var(--foreground);"
+            placeholder="Search..."
             class="w-full pl-10 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-zinc-500"
           >
         </div>
@@ -114,7 +120,7 @@ const handleTabClick = (id) => {
         </slot>
       </div>
 
-      <div v-if="showFooter" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div v-if="showFooter" style="background-color: var(--primary); color: var(--primary-foreground);" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         
         <p class="text-[11px] text-zinc-500 uppercase tracking-widest font-bold italic">
           Showing {{ totalEntries === 0 ? 0 : (currentPage - 1) * pageSize + 1 }} 

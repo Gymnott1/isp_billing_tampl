@@ -193,13 +193,14 @@ watch(
         <div v-if="activeTabData?.type === 'table'" class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-zinc-100 dark:border-zinc-800 text-zinc-400 uppercase font-bold tracking-wider">
+              <tr class="border-b border-zinc-100 dark:border-zinc-800 text-zinc-400 uppercase font-bold tracking-wider" style="border-color: var(--border)">
                 <th v-if="activeTabData.isSelectable" class="px-6 py-4 w-10">
                   <input 
                     type="checkbox" 
                     :checked="selectedRows.length === displayRows.length && displayRows.length > 0"
                     @change="toggleAll"
-                    class="w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 bg-transparent"
+                    class="px-6 py-4 font-bold uppercase tracking-wider"
+                    style="color: var(--foreground); opacity: 0.7;"
                   >
                 </th>
                 
