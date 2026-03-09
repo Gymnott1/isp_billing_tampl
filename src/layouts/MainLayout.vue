@@ -117,7 +117,12 @@ const closeSidebarOnMobile = () => {
         
         <div class="relative mt-4">
           <div @click.stop="isUserMenuOpen = !isUserMenuOpen" class="flex items-center gap-3 p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors group">
-            <div class="w-9 h-9 rounded bg-pink-600 flex items-center justify-center text-xs font-bold text-white shrink-0 group-hover:scale-105 transition-transform">ST</div>
+              <div 
+                class="w-9 h-9 rounded flex items-center justify-center text-xs font-bold shrink-0 transition-transform group-hover:scale-105"
+                style="background-color: var(--primary); color: var(--primary-foreground);"
+              >
+                ST
+              </div>
             <div v-if="isSidebarOpen" class="flex-1 min-w-0">
               <p class="text-sm font-semibold truncate leading-none mb-1">username</p>
               <p class="text-[11px] text-zinc-500 truncate leading-none">user@gmail.com</p>

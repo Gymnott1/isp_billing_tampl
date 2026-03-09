@@ -80,31 +80,32 @@ const handleTabClick = (id) => {
         </div>
       </div>
 
-      <div v-if="showToolbar"  class="p-4 bg-zinc-50/50 dark:bg-zinc-900/20 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800">
+      <div v-if="showToolbar" class="p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800">
         
-        <div class="flex items-center gap-2 text-xs font-medium text-zinc-500">
+        <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-zinc-400">
           <span>Show</span>
           <select 
             :value="pageSize" 
             @change="emit('update:pageSize', parseInt($event.target.value))"
-            class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 outline-none"
+            class="bg-transparent border rounded-md px-2 py-1 outline-none transition-colors focus:border-primary"
+            style="border-color: var(--border); color: var(--foreground)"
           >
             <option :value="15">15</option>
             <option :value="50">50</option>
             <option :value="100">100</option>
           </select>
-          <span>records</span>
+          <span>Records</span>
         </div>
 
-        <div class="relative w-full md:w-80">
-          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" :size="15" />
+        <div class="relative w-full md:w-72">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" :size="14" />
           <input 
             v-model="searchQuery"
-            @input="$emit('search', searchQuery)"
+            @input="emit('search', searchQuery)"
             type="text" 
-            style="background-color: var(--input); border-color: var(--border); color: var(--foreground);"
-            placeholder="Search..."
-            class="w-full pl-10 pr-4 py-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all placeholder:text-zinc-500"
+            placeholder="Search customers..." 
+            class="w-full pl-9 pr-4 py-2 bg-transparent border rounded-full text-xs outline-none transition-all focus:ring-4 focus:ring-primary/5"
+            style="border-color: var(--border); color: var(--foreground)"
           >
         </div>
       </div>
@@ -120,34 +121,54 @@ const handleTabClick = (id) => {
         </slot>
       </div>
 
-      <div v-if="showFooter" style="background-color: var(--primary); color: var(--primary-foreground);" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div v-if="showFooter" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 bg-transparent">
         
-        <p class="text-[11px] text-zinc-500 uppercase tracking-widest font-bold italic">
+        <p class="text-[10px] uppercase tracking-widest font-bold italic" style="color: var(--muted-foreground)">
           Showing {{ totalEntries === 0 ? 0 : (currentPage - 1) * pageSize + 1 }} 
           to {{ Math.min(currentPage * pageSize, totalEntries) }} 
           of {{ totalEntries }} entries
         </p>
         
-        <div class="flex items-center gap-1">
-          <button @click="emit('go-page', 1)" :disabled="currentPage === 1" class="px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">First</button>
+        <div class="flex items-center gap-1.5">
+          <button 
+            @click="emit('go-page', 1)" :disabled="currentPage === 1" 
+            class="px-3 py-2 border rounded-lg text-[10px] font-bold uppercase transition-all disabled:opacity-30 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            style="border-color: var(--border); color: var(--foreground)"
+          >First</button>
           
-          <button @click="emit('go-page', currentPage - 1)" :disabled="currentPage === 1" class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">
+          <button 
+            @click="emit('go-page', currentPage - 1)" :disabled="currentPage === 1" 
+            class="p-2 border rounded-lg transition-all disabled:opacity-30 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            style="border-color: var(--border); color: var(--foreground)"
+          >
             <ChevronLeft :size="14"/>
           </button>
-          <div class="flex items-center bg-blue-600 text-white rounded-lg px-1 shadow-lg shadow-blue-600/20">
+
+          <div 
+            class="flex items-center rounded-lg px-1 shadow-md transition-transform active:scale-95"
+            style="background-color: var(--primary); color: var(--primary-foreground)"
+          >
             <input 
               type="number" 
               :value="currentPage"
               @input="emit('go-page', $event.target.value)"
-              class="w-10 py-2 bg-transparent text-center text-xs font-bold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              class="w-10 py-2 bg-transparent text-center text-xs font-black outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             >
           </div>
 
-          <button @click="emit('go-page', currentPage + 1)" :disabled="currentPage >= totalPages" class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">
+          <button 
+            @click="emit('go-page', currentPage + 1)" :disabled="currentPage >= totalPages" 
+            class="p-2 border rounded-lg transition-all disabled:opacity-30 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            style="border-color: var(--border); color: var(--foreground)"
+          >
             <ChevronRight :size="14"/>
           </button>
 
-          <button @click="emit('go-page', totalPages)" :disabled="currentPage >= totalPages" class="px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">Last</button>
+          <button 
+            @click="emit('go-page', totalPages)" :disabled="currentPage >= totalPages" 
+            class="px-3 py-2 border rounded-lg text-[10px] font-bold uppercase transition-all disabled:opacity-30 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+            style="border-color: var(--border); color: var(--foreground)"
+          >Last</button>
         </div>
       </div>
     </div>
