@@ -18,6 +18,7 @@ const routes = [
                     count: 2,
                     type: 'table',
                     isExpandable: false,
+                    isSelectable: true,
                     headers: ['User', 'Address / MAC', 'Mikrotik', 'Status / Expiry', 'Action'],
                     rowActions: [
                         { label: 'View Details', iconName: 'Eye', command: 'view' },
@@ -136,6 +137,7 @@ const routes = [
                 iconName: 'HardDrive',
                 type: 'table',
                 isExpandable: true,
+                isSelectable: true,
                 headers: ['Action', 'Device Identity', 'CPU Load', 'Memory / Disk', 'System Status'],
                 rows: [
                     // ROW 1: Standard Offline Gateway

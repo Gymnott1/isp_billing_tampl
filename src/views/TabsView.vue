@@ -5,7 +5,7 @@ import Tabs from '@/components/Tabs.vue'
 import { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
   Ticket, Receipt, Settings, Activity, Plus, Download, 
-  ChevronUp, ChevronDown, LayoutGrid, FileText, ChevronRight, Cpu, Shield
+  ChevronUp, ChevronDown, LayoutGrid, FileText, ChevronRight, Cpu, Shield, Trash2
 } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -20,6 +20,7 @@ const currentTab = ref('')
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const expandedRows = ref([])
+const selectedRows = ref([])
 
 const iconMap = { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
@@ -35,8 +36,20 @@ const toggleRow = (index) => {
   }
 }
 
+const toggleAll = () => {
+  if (selectedRows.value.length === displayRows.value.length) {
+    selectedRows.value = []
+  } else {
+    selectedRows.value = displayRows.value.map((_, index) => index)
+  }
+}
 
 
+const handleBulkDelete = () => {
+  console.log('Deleting indices:', selectedRows.value)
+  // Logic to delete from your data source
+  selectedRows.value = [] 
+}
 
 const handleAction = (command) => {
   console.log('Action triggered:', command)
@@ -101,6 +114,11 @@ const displayRows = computed(() => {
   })
 })
 
+watch(currentTab, () => {
+  selectedRows.value = []
+})
+
+
 watch(
   () => props.tabs,
   (newTabs) => {
@@ -118,6 +136,15 @@ watch(
 <template>
   <div class="p-4 md:p-8 space-y-6 max-w-[1600px] mx-auto animate-in">
     <h1 class="text-xl font-bold tracking-tight">{{ title }}</h1>
+    <div v-if="selectedRows.length > 0" class="flex justify-end animate-in fade-in zoom-in duration-200">
+      <button 
+        @click="handleBulkDelete"
+        class="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-lg shadow-red-600/20 transition-all active:scale-95"
+      >
+        <Trash2 :size="14" />
+        Delete {{ selectedRows.length }} {{ activeTabData.resourceName || 'Items' }}
+      </button>
+    </div>
 
     <Tabs 
       :tabs="processedTabs" 
@@ -135,8 +162,16 @@ watch(
           <table class="w-full text-left text-xs">
             <thead>
               <tr class="border-b border-zinc-100 dark:border-zinc-800 text-zinc-400 uppercase font-bold tracking-wider">
-                <th 
-                  v-for="header in activeTabData?.headers" 
+                <th v-if="activeTabData.isSelectable" class="px-6 py-4 w-10">
+                  <input 
+                    type="checkbox" 
+                    :checked="selectedRows.length === displayRows.length && displayRows.length > 0"
+                    @change="toggleAll"
+                    class="w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 bg-transparent"
+                  >
+                </th>
+                
+                <th v-for="header in activeTabData?.headers"
                   :key="header" 
                   @click="handleSort(header)"
                   class="px-6 py-4 cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors group"
@@ -161,7 +196,15 @@ watch(
             </thead>
             <tbody class="divide-y divide-zinc-50 dark:divide-zinc-800/50">
               <template v-for="(row, rowIndex) in displayRows" :key="rowIndex">
-                <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-800/10 transition-colors group border-b border-zinc-100 dark:border-zinc-800/50">
+                <tr :class="[selectedRows.includes(rowIndex) ? 'bg-blue-50/30 dark:bg-blue-600/5' : '']" class="hover:bg-zinc-50dark:hover:bg-zinc-800/10 transition-colors group border-b border-zinc-100 dark:border-zinc-800/50">
+                  <td v-if="activeTabData.isSelectable" class="px-6 py-4">
+                    <input 
+                      type="checkbox" 
+                      v-model="selectedRows" 
+                      :value="rowIndex"
+                      class="w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 bg-transparent"
+                    >
+                  </td>
                   
                   <td 
                     v-for="(header, hIndex) in activeTabData.headers" 
@@ -195,46 +238,39 @@ watch(
                   </td>
                 </tr>
 
-<!-- Inside src/views/TabsView.vue Template -->
+                <tr v-if="expandedRows.includes(rowIndex) && row.details" class="bg-zinc-50/50 dark:bg-zinc-900/40">
+                  <td :colspan="activeTabData.headers.length" class="px-8 py-6">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
+                      
+                      <div 
+                        v-for="(group, gIndex) in row.details" :key="gIndex"
+                        class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm"
+                      >
+                        <div class="flex items-center gap-2 mb-4 text-zinc-400">
+                          <component :is="iconMap[group.icon] || Info" :size="14" />
+                          <span class="text-[10px] font-bold uppercase tracking-widest">{{ group.title }}</span>
+                        </div>
 
-<tr v-if="expandedRows.includes(rowIndex) && row.details" class="bg-zinc-50/50 dark:bg-zinc-900/40">
-  <td :colspan="activeTabData.headers.length" class="px-8 py-6">
-    
-    <!-- Dynamic Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in slide-in-from-top-2 duration-200">
-      
-      <div 
-        v-for="(group, gIndex) in row.details" :key="gIndex"
-        class="bg-white dark:bg-black/20 border border-zinc-200 dark:border-zinc-800 p-4 rounded-xl shadow-sm"
-      >
-        <!-- Card Header -->
-        <div class="flex items-center gap-2 mb-4 text-zinc-400">
-          <component :is="iconMap[group.icon] || Info" :size="14" />
-          <span class="text-[10px] font-bold uppercase tracking-widest">{{ group.title }}</span>
-        </div>
+                        <div v-if="group.items" class="space-y-2 text-xs">
+                          <p v-for="item in group.items" :key="item.label" class="flex justify-between border-b border-zinc-100 dark:border-zinc-800/50 pb-1 last:border-0">
+                            <span class="text-zinc-500">{{ item.label }}:</span>
+                            <span class="font-bold text-zinc-700 dark:text-zinc-300">{{ item.value }}</span>
+                          </p>
+                        </div>
 
-        <!-- Card Body: Key-Value List -->
-        <div v-if="group.items" class="space-y-2 text-xs">
-          <p v-for="item in group.items" :key="item.label" class="flex justify-between border-b border-zinc-100 dark:border-zinc-800/50 pb-1 last:border-0">
-            <span class="text-zinc-500">{{ item.label }}:</span>
-            <span class="font-bold text-zinc-700 dark:text-zinc-300">{{ item.value }}</span>
-          </p>
-        </div>
+                        <div v-else-if="group.renderType === 'code'" class="bg-zinc-100 dark:bg-zinc-800/50 p-2 rounded text-[10px] break-all font-mono text-zinc-500">
+                          {{ group.value }}
+                        </div>
+                        
+                        <div v-else class="text-xs text-zinc-600 dark:text-zinc-400">
+                          {{ group.value }}
+                        </div>
+                      </div>
 
-        <!-- Card Body: Code/Mono block -->
-        <div v-else-if="group.renderType === 'code'" class="bg-zinc-100 dark:bg-zinc-800/50 p-2 rounded text-[10px] break-all font-mono text-zinc-500">
-          {{ group.value }}
-        </div>
-        
-        <!-- Card Body: Simple Text -->
-        <div v-else class="text-xs text-zinc-600 dark:text-zinc-400">
-          {{ group.value }}
-        </div>
-      </div>
-
-    </div>
-  </td>
-</tr>
+                    </div>
+                  </td>
+                </tr>
                 </template>
               </tbody>
           </table>
