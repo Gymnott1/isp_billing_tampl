@@ -50,10 +50,10 @@ const routes = [
         path: '/hotspot',
         component: TabsView,
         props: {
-            title: 'Hotspot Manager',
+            title: 'Hotspot',
             tabs: [{
                     id: 'active',
-                    label: 'Active Sessions',
+                    label: 'CUSTOMERS',
                     iconName: 'Zap',
                     count: 3,
                     isExpandable: false,
@@ -66,9 +66,9 @@ const routes = [
                     ]
                 },
                 {
-                    id: 'users',
-                    label: 'Registered Users',
-                    iconName: 'Users',
+                    id: 'PLANS',
+                    label: 'PLANS',
+                    iconName: 'Laptop',
                     count: 2,
                     isExpandable: false,
                     type: 'table',
@@ -76,18 +76,6 @@ const routes = [
                     rows: [
                         ['admin', 'default', 'Unlimited'],
                         ['staff_01', '1Mbps_Profile', '5GB']
-                    ]
-                },
-                {
-                    id: 'hosts',
-                    label: 'Hosts',
-                    iconName: 'Laptop',
-                    count: 1,
-                    isExpandable: false,
-                    type: 'table',
-                    headers: ['MAC Address', 'IP Address', 'Status'],
-                    rows: [
-                        ['00:1A:2B:3C:4D:5E', '10.5.50.100', 'Authorized']
                     ]
                 }
             ]
@@ -97,10 +85,10 @@ const routes = [
         path: '/vouchers',
         component: TabsView,
         props: {
-            title: 'vouchers Manager',
+            title: 'vouchers',
             tabs: [{
                     id: 'active',
-                    label: 'Active',
+                    label: 'UNUSED',
                     type: 'table',
                     isExpandable: false,
                     headers: ['User', 'IP', 'Uptime'],
@@ -109,31 +97,29 @@ const routes = [
                 {
                     id: 'stats',
                     isExpandable: false,
-                    label: 'Statistics',
+                    label: 'IN USE',
                     type: 'cards',
                 },
                 {
                     id: 'docs',
                     isExpandable: false,
-                    label: 'Help',
+                    label: 'USED',
                     type: 'content',
                 }
             ]
         }
     },
-    // { path: '/vouchers', component: GeneralView, props: { title: 'Voucher System' } },
     { path: '/pppoe', component: GeneralView, props: { title: 'PPPoE Connections' } },
     { path: '/payments', component: GeneralView, props: { title: 'Payment History' } },
-    // { path: '/mikrotik', component: GeneralView, props: { title: 'Mikrotik Settings' } },
 
     {
         path: '/mikrotik',
         component: TabsView,
         props: {
-            title: 'Mikrotik Instances',
+            title: 'MikrotikS',
             tabs: [{
                 id: 'routers',
-                label: 'Gateways',
+                label: 'MIKROTIKS',
                 iconName: 'HardDrive',
                 type: 'table',
                 isExpandable: true,
