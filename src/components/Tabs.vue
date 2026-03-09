@@ -10,6 +10,10 @@ const props = defineProps({
   showToolbar: { type: Boolean, default: true },
   showFooter: { type: Boolean, default: true },
   title: String,
+  currentPage: { type: Number, default: 1 },
+  pageSize: { type: Number, default: 15 },
+  totalPages: { type: Number, default: 1 },
+  totalEntries: { type: Number, default: 0 },
   activeTab: String,
     actions: {
     type: Array,
@@ -17,7 +21,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:activeTab', 'refresh', 'search', 'action'])
+const emit = defineEmits(['update:activeTab', 'refresh', 'search', 'action', 'update:pageSize', 'go-page'])
 
 const searchQuery = ref('')
 
@@ -75,10 +79,14 @@ const handleTabClick = (id) => {
         
         <div class="flex items-center gap-2 text-xs font-medium text-zinc-500">
           <span>Show</span>
-          <select class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1.5 outline-none focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer">
-            <option>15</option>
-            <option>50</option>
-            <option>100</option>
+          <select 
+            :value="pageSize" 
+            @change="emit('update:pageSize', parseInt($event.target.value))"
+            class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md px-2 py-1 outline-none"
+          >
+            <option :value="15">15</option>
+            <option :value="50">50</option>
+            <option :value="100">100</option>
           </select>
           <span>records</span>
         </div>
@@ -107,13 +115,33 @@ const handleTabClick = (id) => {
       </div>
 
       <div v-if="showFooter" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p class="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">Showing 0 to 0 of 0 entries</p>
+        
+        <p class="text-[11px] text-zinc-500 uppercase tracking-widest font-bold italic">
+          Showing {{ totalEntries === 0 ? 0 : (currentPage - 1) * pageSize + 1 }} 
+          to {{ Math.min(currentPage * pageSize, totalEntries) }} 
+          of {{ totalEntries }} entries
+        </p>
         
         <div class="flex items-center gap-1">
-          <button class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors disabled:opacity-50"><ChevronsLeft :size="14"/></button>
-          <button class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors disabled:opacity-50"><ChevronLeft :size="14"/></button>
-          <button class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors disabled:opacity-50"><ChevronRight :size="14"/></button>
-          <button class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 transition-colors disabled:opacity-50"><ChevronsRight :size="14"/></button>
+          <button @click="emit('go-page', 1)" :disabled="currentPage === 1" class="px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">First</button>
+          
+          <button @click="emit('go-page', currentPage - 1)" :disabled="currentPage === 1" class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">
+            <ChevronLeft :size="14"/>
+          </button>
+          <div class="flex items-center bg-blue-600 text-white rounded-lg px-1 shadow-lg shadow-blue-600/20">
+            <input 
+              type="number" 
+              :value="currentPage"
+              @input="emit('go-page', $event.target.value)"
+              class="w-10 py-2 bg-transparent text-center text-xs font-bold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            >
+          </div>
+
+          <button @click="emit('go-page', currentPage + 1)" :disabled="currentPage >= totalPages" class="p-2 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">
+            <ChevronRight :size="14"/>
+          </button>
+
+          <button @click="emit('go-page', totalPages)" :disabled="currentPage >= totalPages" class="px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-lg text-[10px] font-bold uppercase hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30">Last</button>
         </div>
       </div>
     </div>

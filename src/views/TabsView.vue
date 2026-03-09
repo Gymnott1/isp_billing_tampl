@@ -21,11 +21,35 @@ const sortKey = ref('')
 const sortOrder = ref('asc')
 const expandedRows = ref([])
 const selectedRows = ref([])
+const currentPage = ref(1)
+const pageSize = ref(15)
 
 const iconMap = { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
   Ticket, Receipt, Settings, Activity, Plus, 
   Download, LayoutGrid, FileText
+}
+
+
+const totalPages = computed(() => {
+  const total = displayRows.value.length
+  return Math.ceil(total / pageSize.value) || 1
+})
+
+const paginatedRows = computed(() => {
+  // Use displayRows (the sorted/searched list) to slice
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return displayRows.value.slice(start, end)
+})
+
+const handlePageInput = (val) => {
+  const num = parseInt(val)
+  if (!isNaN(num) && num > 0 && num <= totalPages.value) {
+    currentPage.value = num
+  } else if (!val) {
+    currentPage.value = 1
+  }
 }
 
 const toggleRow = (index) => {
@@ -114,9 +138,15 @@ const displayRows = computed(() => {
   })
 })
 
+
+
 watch(currentTab, () => {
   selectedRows.value = []
 })
+watch([currentTab, () => activeTabData.value?.rows], () => {
+  currentPage.value = 1
+})
+
 
 
 watch(
@@ -149,6 +179,12 @@ watch(
     <Tabs 
       :tabs="processedTabs" 
       v-model:activeTab="currentTab"
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      :pageSize="pageSize"
+      :totalEntries="displayRows.length"
+      @update:pageSize="pageSize = $event"
+      @go-page="handlePageInput"
       :actions="activeTabData?.actions"
       :showToolbar="activeTabData?.type === 'table'" 
       :showFooter="activeTabData?.type === 'table'"
@@ -195,7 +231,7 @@ watch(
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-50 dark:divide-zinc-800/50">
-              <template v-for="(row, rowIndex) in displayRows" :key="rowIndex">
+              <template v-for="(row, rowIndex) in paginatedRows" :key="rowIndex">
                 <tr :class="[selectedRows.includes(rowIndex) ? 'bg-blue-50/30 dark:bg-blue-600/5' : '']" class="hover:bg-zinc-50dark:hover:bg-zinc-800/10 transition-colors group border-b border-zinc-100 dark:border-zinc-800/50">
                   <td v-if="activeTabData.isSelectable" class="px-6 py-4">
                     <input 
