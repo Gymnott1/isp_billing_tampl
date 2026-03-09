@@ -19,7 +19,7 @@ const colorOptions = [
   { id: 'rose', label: 'Rose', color: 'bg-rose-500' },
   { id: 'zinc', label: 'Zinc', color: 'bg-zinc-500' }
 ]
-
+console.log('Available Store Methods:', Object.keys(themeStore))
 </script>
 
 <template>
@@ -42,6 +42,23 @@ const colorOptions = [
             <p class="text-[10px] text-zinc-500">Set the dashboard to {{ mode.id }} display.</p>
           </div>
           <Check v-if="themeStore.theme === mode.id" :size="14" class="absolute top-4 right-4 text-blue-600" />
+        </button>
+      </div>
+    </section>
+    <section>
+      <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-4">Color Theme</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <button 
+          v-for="opt in colorOptions" :key="opt.id"
+          @click="themeStore.applyAccentColor(opt.id)"
+          :class="[themeStore.accentColor === opt.id ? 'border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800/50' : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/30']"
+          class="flex items-center justify-between p-3 border rounded-lg transition-all group"
+        >
+          <div class="flex items-center gap-3">
+            <div :class="opt.color" class="w-4 h-4 rounded-full shadow-sm group-hover:scale-110 transition-transform"></div>
+            <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">{{ opt.label }}</span>
+          </div>
+          <Check v-if="themeStore.accentColor === opt.id" :size="14" class="text-zinc-900 dark:text-white" />
         </button>
       </div>
     </section>

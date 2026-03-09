@@ -14,13 +14,24 @@ export const useThemeStore = defineStore('theme', () => {
         theme.value = mode
     }
 
+    // Ensure this function name is EXACTLY "applyAccentColor"
     const applyAccentColor = (color) => {
-        document.documentElement.classList.remove(`theme-${accentColor.value}`)
+        // 1. Clean up old classes
+        document.documentElement.classList.forEach(cls => {
+                if (cls.startsWith('theme-')) document.documentElement.classList.remove(cls)
+            })
+            // 2. Add new class
         document.documentElement.classList.add(`theme-${color}`)
-
-        localStorage.setItem('accentColor', color)
+            // 3. Update state
         accentColor.value = color
+        localStorage.setItem('accentColor', color)
     }
 
-    return { theme, accentColor, applyTheme, applyAccentColor }
+    // EVERYTHING must be in this return object
+    return {
+        theme,
+        accentColor,
+        applyTheme,
+        applyAccentColor
+    }
 })
