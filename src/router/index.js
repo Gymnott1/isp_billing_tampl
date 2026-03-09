@@ -28,7 +28,32 @@ const routes = [
             ]
         }
     },
-    { path: '/vouchers', component: GeneralView, props: { title: 'Voucher System' } },
+    {
+        path: '/vouchers',
+        component: TabsView,
+        props: {
+            title: 'vouchers Manager',
+            tabs: [{
+                    id: 'active',
+                    label: 'Active',
+                    type: 'table',
+                    headers: ['User', 'IP', 'Uptime'],
+                    actions: [{ label: 'Add', iconName: 'Plus', command: 'add' }]
+                },
+                {
+                    id: 'stats',
+                    label: 'Statistics',
+                    type: 'cards',
+                },
+                {
+                    id: 'docs',
+                    label: 'Help',
+                    type: 'content',
+                }
+            ]
+        }
+    },
+    // { path: '/vouchers', component: GeneralView, props: { title: 'Voucher System' } },
     { path: '/pppoe', component: GeneralView, props: { title: 'PPPoE Connections' } },
     { path: '/payments', component: GeneralView, props: { title: 'Payment History' } },
     { path: '/mikrotik', component: GeneralView, props: { title: 'Mikrotik Settings' } },

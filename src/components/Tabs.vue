@@ -7,6 +7,8 @@ const props = defineProps({
     type: Array,
     required: true, // Example: [{ id: 'hotspot', label: 'HOTSPOT', count: 0, icon: Wifi }]
   },
+  showToolbar: { type: Boolean, default: true },
+  showFooter: { type: Boolean, default: true },
   title: String,
   activeTab: String,
     actions: {
@@ -69,7 +71,7 @@ const handleTabClick = (id) => {
         </div>
       </div>
 
-      <div class="p-4 bg-zinc-50/50 dark:bg-zinc-900/20 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800">
+      <div v-if="showToolbar"  class="p-4 bg-zinc-50/50 dark:bg-zinc-900/20 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800">
         
         <div class="flex items-center gap-2 text-xs font-medium text-zinc-500">
           <span>Show</span>
@@ -104,7 +106,7 @@ const handleTabClick = (id) => {
         </slot>
       </div>
 
-      <div class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div v-if="showFooter" class="p-4 border-t border-zinc-100 dark:border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-[11px] text-zinc-400 uppercase tracking-widest font-bold">Showing 0 to 0 of 0 entries</p>
         
         <div class="flex items-center gap-1">
