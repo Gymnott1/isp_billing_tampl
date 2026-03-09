@@ -1,109 +1,111 @@
 <script setup>
-import { Sun, Moon, Monitor, Plus, Pipette, Check } from 'lucide-vue-next'
+import { Sun, Moon, Monitor, Check, Info } from 'lucide-vue-next'
 import { useThemeStore } from '@/stores/theme'
-import { ref } from 'vue' 
+import { themes } from '@/stores/colors' // Import the oklch data
 
 const themeStore = useThemeStore()
-const colorInput = ref(null)
 
 const modes = [
   { id: 'light', label: 'Light', icon: Sun },
   { id: 'dark', label: 'Dark', icon: Moon },
   { id: 'system', label: 'System', icon: Monitor }
 ]
-
-const presets = [
-  { id: 'blue', label: 'Blue', color: 'bg-blue-500' },
-  { id: 'violet', label: 'Violet', color: 'bg-violet-500' },
-  { id: 'green', label: 'Green', color: 'bg-green-500' },
-  { id: 'orange', label: 'Orange', color: 'bg-orange-500' },
-  { id: 'red', label: 'Red', color: 'bg-red-500' },
-  { id: 'rose', label: 'Rose', color: 'bg-rose-500' },
-  { id: 'zinc', label: 'Zinc', color: 'bg-zinc-500' }
-]
-
-const handleCustomColor = (e) => {
-  themeStore.applyAccentColor(e.target.value, true)
-}
 </script>
 
 <template>
-  <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+  <div class="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 p-2 max-w-6xl">
+    
+    <!-- Appearance Section -->
     <section>
-      <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-4">Appearance</h3>
+      <div class="mb-6">
+        <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Appearance</h3>
+        <p class="text-xs text-zinc-500">Choose how the dashboard looks on your device.</p>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <button 
           v-for="mode in modes" :key="mode.id"
           @click="themeStore.applyTheme(mode.id)"
-          :class="[themeStore.theme === mode.id ? 'border-blue-600 ring-2 ring-blue-500/20' : 'border-zinc-200 dark:border-zinc-800']"
-          class="relative flex flex-col gap-3 p-4 border rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all text-left group"
-        >
-          <div :class="[themeStore.theme === mode.id ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' : 'text-zinc-500 bg-zinc-100 dark:bg-zinc-800']"
-            class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors">
-            <component :is="mode.icon" :size="20" />
-          </div>
-          <div>
-            <p class="text-xs font-bold">{{ mode.label }} Mode</p>
-            <p class="text-[10px] text-zinc-500">Set the dashboard to {{ mode.id }} display.</p>
-          </div>
-          <Check v-if="themeStore.theme === mode.id" :size="14" class="absolute top-4 right-4 text-blue-600" />
-        </button>
-      </div>
-    </section>
-   
-        <section>
-      <div class="flex items-center justify-between mb-6">
-        <div>
-          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Color Theme</h3>
-          <p class="text-xs text-zinc-500">Select a preset or choose a custom brand color.</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
-        
-        <button 
-          v-for="opt in presets" :key="opt.id"
-          @click="themeStore.applyAccentColor(opt.id)"
-          :class="[themeStore.accentColor === opt.id ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#09090b] ring-zinc-400' : 'border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100']"
-          class="flex items-center gap-3 p-3 border rounded-xl transition-all bg-white dark:bg-zinc-900 shadow-sm active:scale-95"
-        >
-          <div :class="opt.color" class="w-5 h-5 rounded-full shadow-inner"></div>
-          <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">{{ opt.label }}</span>
-          <Check v-if="themeStore.accentColor === opt.id" :size="14" class="ml-auto text-zinc-400" />
-        </button>
-
-        <button 
-          @click="colorInput.click()"
-          :class="[themeStore.accentColor === 'custom' ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#09090b] ring-zinc-400' : 'border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100']"
-          class="flex items-center gap-3 p-3 border rounded-xl transition-all bg-white dark:bg-zinc-900 shadow-sm relative overflow-hidden active:scale-95"
+          :class="[
+            themeStore.theme === mode.id 
+              ? 'border-primary ring-2 ring-primary/20 bg-primary/5 shadow-sm' 
+              : 'border-zinc-200 dark:border-zinc-800'
+          ]"
+          class="relative flex flex-col gap-3 p-5 border rounded-2xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all text-left group active:scale-[0.98]"
         >
           <div 
-            :style="{ backgroundColor: themeStore.customHex || '#3b82f6' }" 
-            class="w-5 h-5 rounded-full shadow-inner flex items-center justify-center"
+            :class="[
+              themeStore.theme === mode.id 
+                ? 'text-primary bg-primary/10' 
+                : 'text-zinc-500 bg-zinc-100 dark:bg-zinc-800'
+            ]"
+            class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors shadow-inner"
           >
-            <Plus v-if="!themeStore.customHex" :size="10" class="text-white" />
+            <component :is="mode.icon" :size="22" />
           </div>
-          <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">
-            {{ themeStore.accentColor === 'custom' ? themeStore.customHex : 'Custom' }}
-          </span>
-          <Pipette :size="14" class="ml-auto text-zinc-400" />
+          <div>
+            <p class="text-sm font-bold">{{ mode.label }} Mode</p>
+            <p class="text-[11px] text-zinc-500 leading-relaxed">Switch to {{ mode.id }} mode for the interface.</p>
+          </div>
           
-          <input 
-            ref="colorInput"
-            type="color" 
-            :value="themeStore.customHex || '#3b82f6'"
-            @input="handleCustomColor"
-            class="absolute inset-0 opacity-0 cursor-pointer"
-          />
+          <div v-if="themeStore.theme === mode.id" class="absolute top-5 right-5 w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+             <Check :size="12" class="text-white font-bold" />
+          </div>
         </button>
       </div>
     </section>
+
+    <!-- Pro Color Themes Section -->
+    <section>
+      <div class="mb-6">
+        <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Pro Color Themes</h3>
+        <p class="text-xs text-zinc-500">Select a high-fidelity palette from the OKLCH system.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <button 
+          v-for="t in themes" :key="t.name"
+          @click="themeStore.applyAccentColor(t.name)"
+          :class="[
+            themeStore.accentName === t.name 
+              ? 'ring-2 ring-primary border-transparent shadow-xl translate-y-[-2px]' 
+              : 'border-zinc-200 dark:border-zinc-800 opacity-80 hover:opacity-100'
+          ]"
+          class="flex items-center gap-4 p-5 border rounded-2xl transition-all bg-white dark:bg-zinc-900 group active:scale-95"
+        >
+          <!-- Preview Circle -->
+          <div :class="t.color" class="w-8 h-8 rounded-full shadow-lg group-hover:scale-110 transition-transform ring-4 ring-white dark:ring-zinc-800"></div>
+          
+          <div class="flex flex-col text-left">
+            <span class="text-xs font-bold text-zinc-900 dark:text-white">{{ t.label }}</span>
+            <span class="text-[10px] text-zinc-400 font-medium uppercase tracking-tighter">System Override</span>
+          </div>
+
+          <div v-if="themeStore.accentName === t.name" class="ml-auto w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+            <Check :size="14" class="text-primary" />
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- Info Note -->
+    <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-start gap-3">
+      <Info :size="16" class="text-zinc-400 mt-0.5" />
+      <p class="text-[11px] text-zinc-500 leading-relaxed">
+        These themes use the <strong class="text-zinc-700 dark:text-zinc-300">OKLCH color space</strong> to ensure perceptually uniform lightness and chroma across both light and dark modes. Settings are automatically saved to your local storage.
+      </p>
+    </div>
   </div>
 </template>
-
 
 <style scoped>
 button {
   -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* Custom shadow for the primary color */
+.shadow-primary {
+  box-shadow: 0 10px 15px -3px rgba(var(--primary), 0.3);
 }
 </style>
