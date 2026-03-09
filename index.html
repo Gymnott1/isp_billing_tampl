@@ -1,39 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="preload">
+<!-- Added preload class -->
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/android-icon-96x96.png">
-    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netic ISP</title>
-
     <meta name="color-scheme" content="light dark">
 
     <style>
         html {
             background-color: #f9fafb;
+            transition: none !important;
         }
         
         html.dark {
             background-color: #09090b;
-        }
-        
-        body {
-            margin: 0;
-            min-height: 100vh;
+            transition: none !important;
         }
     </style>
+
     <script>
         (function() {
-            try {
-                var saved = localStorage.getItem('theme');
-                var system = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (saved === 'dark' || (!saved && system)) {
-                    document.documentElement.classList.add('dark');
-                }
-            } catch (e) {}
+            const saved = localStorage.getItem('theme');
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && systemDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
         })();
     </script>
 </head>
@@ -41,6 +36,13 @@
 <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.documentElement.classList.remove('preload');
+            }, 100);
+        });
+    </script>
 </body>
 
 </html>
