@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 export const useThemeStore = defineStore('theme', () => {
     const theme = ref(localStorage.getItem('theme') || 'system')
+    const accentColor = ref(localStorage.getItem('accentColor') || 'blue')
 
     const applyTheme = (mode) => {
         const isDark = mode === 'dark' ||
@@ -13,10 +14,13 @@ export const useThemeStore = defineStore('theme', () => {
         theme.value = mode
     }
 
-    // Watch for system preference changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-        if (theme.value === 'system') applyTheme('system')
-    })
+    const applyAccentColor = (color) => {
+        document.documentElement.classList.remove(`theme-${accentColor.value}`)
+        document.documentElement.classList.add(`theme-${color}`)
 
-    return { theme, applyTheme }
+        localStorage.setItem('accentColor', color)
+        accentColor.value = color
+    }
+
+    return { theme, accentColor, applyTheme, applyAccentColor }
 })

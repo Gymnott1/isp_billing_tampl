@@ -38,7 +38,7 @@ const handleTabClick = (id) => {
         @click="handleTabClick(tab.id)"
         :class="[
           activeTab === tab.id 
-            ? 'border-blue-600 text-blue-600 bg-blue-50/30 dark:bg-blue-600/10' 
+            ? 'border-primary text-primary bg-blue-50/30 dark:bg-blue-600/10' 
             : 'border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300'
         ]"
         class="flex items-center gap-2 px-6 py-3 border-b-2 text-xs font-bold transition-all"

@@ -39,3 +39,65 @@ body {
 .sidebar-drawer {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
 }
+
+
+/* Add this to your src/assets/main.css */
+
+:root {
+    --primary: 37 99 235;
+    /* Default Blue */
+}
+
+
+/* Theme Definitions (Tailwind RGB format) */
+
+.theme-blue {
+    --primary: 37 99 235;
+}
+
+.theme-yellow {
+    --primary: 234 179 8;
+}
+
+.theme-violet {
+    --primary: 139 92 246;
+}
+
+.theme-green {
+    --primary: 34 197 94;
+}
+
+.theme-orange {
+    --primary: 249 115 22;
+}
+
+.theme-red {
+    --primary: 220 38 38;
+}
+
+.theme-rose {
+    --primary: 225 29 72;
+}
+
+.theme-zinc {
+    --primary: 63 63 70;
+}
+
+
+/* Utility class to use the dynamic color */
+
+.bg-primary {
+    background-color: rgb(var(--primary));
+}
+
+.text-primary {
+    color: rgb(var(--primary));
+}
+
+.border-primary {
+    border-color: rgb(var(--primary));
+}
+
+.ring-primary {
+    --tw-ring-color: rgba(var(--primary), 0.2);
+}

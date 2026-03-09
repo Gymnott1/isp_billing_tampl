@@ -8,6 +8,18 @@ const modes = [
   { id: 'dark', label: 'Dark', icon: Moon },
   { id: 'system', label: 'System', icon: Monitor }
 ]
+
+const colorOptions = [
+  { id: 'blue', label: 'Blue', color: 'bg-blue-500' },
+  { id: 'yellow', label: 'Yellow', color: 'bg-yellow-500' },
+  { id: 'violet', label: 'Violet', color: 'bg-violet-500' },
+  { id: 'green', label: 'Green', color: 'bg-green-500' },
+  { id: 'orange', label: 'Orange', color: 'bg-orange-500' },
+  { id: 'red', label: 'Red', color: 'bg-red-500' },
+  { id: 'rose', label: 'Rose', color: 'bg-rose-500' },
+  { id: 'zinc', label: 'Zinc', color: 'bg-zinc-500' }
+]
+
 </script>
 
 <template>

@@ -22,7 +22,7 @@ const isActive = computed(() => {
     class="flex items-center gap-3 px-3 py-2.5 rounded-lg shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     :class="[
       isActive 
-        ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20 active:scale-[0.98]' 
+        ? 'bg-primary text-white shadow-lg shadow-blue-600/20 active:scale-[0.98]' 
         : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white active:bg-zinc-200 dark:active:bg-zinc-700'
     ]"
     style="transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;"

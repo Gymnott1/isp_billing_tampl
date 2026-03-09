@@ -7,6 +7,7 @@ const themeStore = useThemeStore()
 
 onMounted(() => {
   themeStore.applyTheme(themeStore.theme)
+  themeStore.applyAccentColor(themeStore.accentColor) 
 })
 </script>
 
