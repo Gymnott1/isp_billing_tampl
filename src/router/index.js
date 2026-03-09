@@ -137,29 +137,94 @@ const routes = [
                 type: 'table',
                 isExpandable: true,
                 headers: ['Action', 'Device Identity', 'CPU Load', 'Memory / Disk', 'System Status'],
-                rowActions: [
-                    { label: 'View Details', iconName: 'Eye', command: 'view' },
-                    { label: 'Modify Profile', iconName: 'Edit', command: 'edit', color: 'blue' },
-                    { label: 'Delete Router', iconName: 'Trash2', command: 'delete', color: 'red' }
-                ],
-                rows: [{
-                    data: ['edit', 'Gateway4', '0%', '0 MB / 0 MB', 'Offline'],
-                    details: [{
-                            title: 'Software Info',
-                            icon: 'Shield',
-                            items: [
-                                { label: 'OS Version', value: 'v.Initial' },
-                                { label: 'Factory Version', value: 'Unknown' }
-                            ]
-                        },
-                        {
-                            title: 'Meta Tags',
-                            icon: 'Info',
-                            renderType: 'code',
-                            value: 'UUID: 89968f6b-13e6-4181-a017-f99ff3083ca0'
-                        }
-                    ]
-                }]
+                rows: [
+                    // ROW 1: Standard Offline Gateway
+                    {
+                        data: ['edit', 'Gateway4', '0%', '12 MB / 128 MB', 'Offline'],
+                        details: [{
+                                title: 'Software Info',
+                                icon: 'Shield',
+                                items: [
+                                    { label: 'OS Version', value: 'v7.12.1' },
+                                    { label: 'Factory Version', value: '6.48' },
+                                    { label: 'Last Heartbeat', value: '1/1/1970' }
+                                ]
+                            },
+                            {
+                                title: 'Meta Tags',
+                                icon: 'Info',
+                                renderType: 'code',
+                                value: 'UUID: 89968f6b-13e6-4181-a017-f99ff3083ca0'
+                            }
+                        ]
+                    },
+                    // ROW 2: High Performance Core Router (X86)
+                    {
+                        data: ['edit', 'Core-Router-X86', '45%', '2.4 GB / 16 GB', 'Online'],
+                        details: [{
+                                title: 'System Resources',
+                                icon: 'Cpu',
+                                items: [
+                                    { label: 'Uptime', value: '142d 05:22:10' },
+                                    { label: 'CPU Count', value: '16 Cores' },
+                                    { label: 'Frequency', value: '3.4 GHz' }
+                                ]
+                            },
+                            {
+                                title: 'Network Config',
+                                icon: 'Activity',
+                                items: [
+                                    { label: 'Public IP', value: '197.232.10.45' },
+                                    { label: 'Local Bridge', value: '10.0.0.1/24' },
+                                    { label: 'Active VPNs', value: '12 Tunnels' }
+                                ]
+                            },
+                            {
+                                title: 'Security Notice',
+                                icon: 'Zap',
+                                value: 'Firewall is currently managing 4,200 active connections with Raw rules enabled.'
+                            }
+                        ]
+                    },
+                    // ROW 3: Sector Tower Access Point
+                    {
+                        data: ['edit', 'West-Tower-AP', '12%', '64 MB / 256 MB', 'Online'],
+                        details: [{
+                                title: 'Wireless Status',
+                                icon: 'Radio',
+                                items: [
+                                    { label: 'SSID', value: 'Netic_Fiber_West' },
+                                    { label: 'Frequency', value: '5240 MHz' },
+                                    { label: 'Connected Clients', value: '42 Devices' }
+                                ]
+                            },
+                            {
+                                title: 'Hardware Profile',
+                                icon: 'Laptop',
+                                items: [
+                                    { label: 'Model', value: 'RB921GS-5HPacD' },
+                                    { label: 'Serial No', value: 'HE708X9J21' }
+                                ]
+                            }
+                        ]
+                    },
+                    // ROW 4: Backup CCR (Standby)
+                    {
+                        data: ['edit', 'CCR-Backup-01', '2%', '512 MB / 2 GB', 'Standby'],
+                        details: [{
+                                title: 'Failover Logs',
+                                icon: 'FileText',
+                                renderType: 'code',
+                                value: 'LOG: 2024-03-08 12:00:00 - Primary Link OK. Backup monitoring active.'
+                            },
+                            {
+                                title: 'Notes',
+                                icon: 'Settings',
+                                value: 'This router is in cold-standby mode. VRRP priority is set to 50.'
+                            }
+                        ]
+                    }
+                ]
             }]
         }
     },
