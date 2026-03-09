@@ -1,17 +1,19 @@
 <script setup>
-import { Sun, Moon, Monitor, Check } from 'lucide-vue-next'
+import { Sun, Moon, Monitor, Plus, Pipette, Check } from 'lucide-vue-next'
 import { useThemeStore } from '@/stores/theme'
+import { ref } from 'vue' 
 
 const themeStore = useThemeStore()
+const colorInput = ref(null)
+
 const modes = [
   { id: 'light', label: 'Light', icon: Sun },
   { id: 'dark', label: 'Dark', icon: Moon },
   { id: 'system', label: 'System', icon: Monitor }
 ]
 
-const colorOptions = [
+const presets = [
   { id: 'blue', label: 'Blue', color: 'bg-blue-500' },
-  { id: 'yellow', label: 'Yellow', color: 'bg-yellow-500' },
   { id: 'violet', label: 'Violet', color: 'bg-violet-500' },
   { id: 'green', label: 'Green', color: 'bg-green-500' },
   { id: 'orange', label: 'Orange', color: 'bg-orange-500' },
@@ -19,7 +21,10 @@ const colorOptions = [
   { id: 'rose', label: 'Rose', color: 'bg-rose-500' },
   { id: 'zinc', label: 'Zinc', color: 'bg-zinc-500' }
 ]
-console.log('Available Store Methods:', Object.keys(themeStore))
+
+const handleCustomColor = (e) => {
+  themeStore.applyAccentColor(e.target.value, true)
+}
 </script>
 
 <template>
@@ -45,22 +50,62 @@ console.log('Available Store Methods:', Object.keys(themeStore))
         </button>
       </div>
     </section>
-    <section>
-      <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-4">Color Theme</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+   
+        <section>
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Color Theme</h3>
+          <p class="text-xs text-zinc-500">Select a preset or choose a custom brand color.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <!-- Preset Buttons -->
         <button 
-          v-for="opt in colorOptions" :key="opt.id"
+          v-for="opt in presets" :key="opt.id"
           @click="themeStore.applyAccentColor(opt.id)"
-          :class="[themeStore.accentColor === opt.id ? 'border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800/50' : 'border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/30']"
-          class="flex items-center justify-between p-3 border rounded-lg transition-all group"
+          :class="[themeStore.accentColor === opt.id ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#09090b] ring-zinc-400' : 'border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100']"
+          class="flex items-center gap-3 p-3 border rounded-xl transition-all bg-white dark:bg-zinc-900 shadow-sm active:scale-95"
         >
-          <div class="flex items-center gap-3">
-            <div :class="opt.color" class="w-4 h-4 rounded-full shadow-sm group-hover:scale-110 transition-transform"></div>
-            <span class="text-xs font-semibold text-zinc-700 dark:text-zinc-300">{{ opt.label }}</span>
+          <div :class="opt.color" class="w-5 h-5 rounded-full shadow-inner"></div>
+          <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">{{ opt.label }}</span>
+          <Check v-if="themeStore.accentColor === opt.id" :size="14" class="ml-auto text-zinc-400" />
+        </button>
+
+        <!-- Custom Color Button -->
+        <button 
+          @click="colorInput.click()"
+          :class="[themeStore.accentColor === 'custom' ? 'ring-2 ring-offset-2 ring-offset-white dark:ring-offset-[#09090b] ring-zinc-400' : 'border-zinc-200 dark:border-zinc-800 opacity-70 hover:opacity-100']"
+          class="flex items-center gap-3 p-3 border rounded-xl transition-all bg-white dark:bg-zinc-900 shadow-sm relative overflow-hidden active:scale-95"
+        >
+          <div 
+            :style="{ backgroundColor: themeStore.customHex || '#3b82f6' }" 
+            class="w-5 h-5 rounded-full shadow-inner flex items-center justify-center"
+          >
+            <Plus v-if="!themeStore.customHex" :size="10" class="text-white" />
           </div>
-          <Check v-if="themeStore.accentColor === opt.id" :size="14" class="text-zinc-900 dark:text-white" />
+          <span class="text-xs font-bold text-zinc-700 dark:text-zinc-300">
+            {{ themeStore.accentColor === 'custom' ? themeStore.customHex : 'Custom' }}
+          </span>
+          <Pipette :size="14" class="ml-auto text-zinc-400" />
+          
+          <!-- Hidden Native Color Picker -->
+          <input 
+            ref="colorInput"
+            type="color" 
+            :value="themeStore.customHex || '#3b82f6'"
+            @input="handleCustomColor"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+          />
         </button>
       </div>
     </section>
   </div>
 </template>
+
+
+<style scoped>
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+</style>
