@@ -1,4 +1,5 @@
 <script setup>
+import { useRoute, useRouter } from 'vue-router'
 import { ref, watch, computed, markRaw } from 'vue'
 import RowActions from '@/components/RowActions.vue'
 import Tabs from '@/components/Tabs.vue'
@@ -16,13 +17,20 @@ const props = defineProps({
   }
 })
 
-const currentTab = ref('')
+
+
+let searchTimeout
+const route = useRoute()
+const router = useRouter()
 const sortKey = ref('')
 const sortOrder = ref('asc')
 const expandedRows = ref([])
 const selectedRows = ref([])
-const currentPage = ref(1)
-const pageSize = ref(15)
+
+const currentTab = ref(route.query.tab || props.tabs[0]?.id || '')
+const currentPage = ref(parseInt(route.query.page) || 1)
+const pageSize = ref(parseInt(route.query.limit) || 15)
+const searchQuery = ref(route.query.q || '')
 
 const iconMap = { 
   Radio, HardDrive, Zap, Users, Laptop, Info, 
@@ -30,6 +38,17 @@ const iconMap = {
   Download, LayoutGrid, FileText
 }
 
+const updateUrl = () => {
+  router.replace({
+    query: {
+      ...route.query,
+      tab: currentTab.value,
+      page: currentPage.value,
+      limit: pageSize.value,
+      q: searchQuery.value || undefined 
+    }
+  })
+}
 
 const totalPages = computed(() => {
   const total = displayRows.value.length
@@ -139,11 +158,19 @@ const displayRows = computed(() => {
 watch(currentTab, () => {
   selectedRows.value = []
 })
-watch([currentTab, () => activeTabData.value?.rows], () => {
-  currentPage.value = 1
+watch(currentTab, () => {
+  currentPage.value = 1 
+  updateUrl()
 })
 
+watch([currentPage, pageSize], updateUrl)
 
+const handleSearch = (val) => {
+  searchQuery.value = val
+  currentPage.value = 1 
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(updateUrl, 500)
+}
 
 watch(
   () => props.tabs,
@@ -157,6 +184,13 @@ watch(
   },
   { immediate: true, deep: true } 
 )
+
+watch(() => route.query, (newQuery) => {
+  if (newQuery.tab) currentTab.value = newQuery.tab
+  if (newQuery.page) currentPage.value = parseInt(newQuery.page)
+  if (newQuery.limit) pageSize.value = parseInt(newQuery.limit)
+  searchQuery.value = newQuery.q || ''
+})
 </script>
 
 <template>
@@ -181,6 +215,7 @@ watch(
       :totalEntries="displayRows.length"
       @update:pageSize="pageSize = $event"
       @go-page="handlePageInput"
+      @search="handleSearch"
       :actions="activeTabData?.actions"
       :showToolbar="activeTabData?.type === 'table'" 
       :showFooter="activeTabData?.type === 'table'"

@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import SidebarItem from '@/components/SidebarItem.vue'
 import UserDropdown from '@/components/UserDropdown.vue'
 import { useThemeStore } from '@/stores/theme'
@@ -13,6 +14,7 @@ const isDark = ref(false)
 const isSidebarOpen = ref(true) 
 const isUserMenuOpen = ref(false)
 const isInitialLoad = ref(true)
+const route = useRoute()
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -59,6 +61,11 @@ const closeSidebarOnMobile = () => {
     setTimeout(() => { isSidebarOpen.value = false }, 150)
   }
 }
+
+watch(() => route.fullPath, (path) => {
+  localStorage.setItem('last_visited_path', path)
+})
+
 </script>
 
 <template>
