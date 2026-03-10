@@ -1,6 +1,17 @@
 <script setup>
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import { User, CreditCard, Bell, LogOut } from 'lucide-vue-next'
+
 const emit = defineEmits(['close'])
+const router = useRouter()
+const authStore = useAuthStore()
+
+const handleLogout = () => {
+  authStore.logout()
+  router.push('/login')
+  emit('close')
+}
 </script>
 
 <template>
@@ -47,6 +58,7 @@ const emit = defineEmits(['close'])
 
     <div class="p-1.5 border-t" style="border-color: var(--border);">
       <button 
+        @click="handleLogout"
         class="w-full flex items-center gap-3 px-3 py-2 text-xs font-bold rounded-lg transition-colors hover:bg-red-500/10"
         style="color: var(--destructive);"
       >
