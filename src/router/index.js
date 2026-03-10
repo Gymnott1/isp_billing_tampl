@@ -4,10 +4,25 @@ import GeneralView from '../views/GeneralView.vue'
 import TabsView from '../views/TabsView.vue'
 import { markRaw } from 'vue'
 import ThemeSettings from '@/components/ThemeSettings.vue'
+import LoginView from '../views/LoginView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const routes = [
-    { path: '/', component: Dashboard },
+    { path: '/login', component: LoginView, meta: { public: true } },
 
+
+    {
+        path: '/',
+        component: () =>
+            import ('../layouts/MainLayout.vue'),
+        children: [
+            { path: '', component: Dashboard },
+
+        ]
+    },
+
+
+    // { path: '/', component: Dashboard },
     {
         path: '/users',
         component: TabsView,
@@ -251,7 +266,19 @@ const routes = [
     { path: '/notifications', component: GeneralView, props: { title: 'Notification Settings' } },
 ]
 
-export default createRouter({
-    history: createWebHistory(),
-    routes
+
+const router = createRouter({ history: createWebHistory(), routes })
+
+router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore()
+
+    if (!to.meta.public && !authStore.isAuthenticated) {
+        next({ path: '/login', query: { redirect: to.fullPath } })
+    } else if (to.path === '/login' && authStore.isAuthenticated) {
+        next('/')
+    } else {
+        next()
+    }
 })
+
+export default router
