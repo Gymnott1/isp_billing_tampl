@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { Loader2 } from 'lucide-vue-next'
+import { Loader2 , Globe, Wifi, ShieldCheck} from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -91,11 +91,17 @@ const handleLogin = async () => {
       <div class="relative z-10 flex flex-col justify-end p-20 space-y-4">
         <h2 class="text-5xl font-black tracking-tight leading-none">Welcome Back!</h2>
         <p class="text-xl text-zinc-400 font-medium max-w-md">Log in to manage your account and access your ISP dashboard.</p>
-        
+
         <div class="pt-10 flex gap-4 opacity-30">
-          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">🌐</div>
-          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">📶</div>
-          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">🛡️</div>
+          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white">
+            <Globe :size="20" stroke-width="1.5" />
+          </div>
+          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white">
+            <Wifi :size="20" stroke-width="1.5" />
+          </div>
+          <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center text-white">
+            <ShieldCheck :size="20" stroke-width="1.5" />
+          </div>
         </div>
       </div>
     </div>
