@@ -6,7 +6,6 @@ export const useAuthStore = defineStore('auth', () => {
     const user = ref(JSON.parse(localStorage.getItem('user')) || null)
 
     const login = async(email) => {
-        // Mock API Delay
         return new Promise((resolve) => {
             setTimeout(() => {
                 isAuthenticated.value = true

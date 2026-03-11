@@ -80,7 +80,7 @@ const handleLogin = async () => {
 
         <div class="text-center">
           <p class="text-[10px] text-zinc-500">Need Help?</p>
-          <a href="tel:+254790882866" class="text-[11px] font-bold underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700">Call/WhatsApp +254 790 882866</a>
+          <a href="tel:+254790882866" class="text-[11px] font-bold underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700">Call/WhatsApp +123 456 7890</a>
         </div>
       </div>
     </div>
