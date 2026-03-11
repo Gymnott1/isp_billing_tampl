@@ -23,17 +23,14 @@ const handleLogin = async () => {
 <template>
   <div class="min-h-screen flex flex-col lg:flex-row bg-white dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100">
     
-    <!-- Branding Logo Mobile -->
     <div class="lg:hidden p-6 flex items-center gap-2">
       <img src="/assets/logo.png" class="w-8 h-8" alt="Logo" />
       <span class="font-bold tracking-tight">Netic ISP</span>
     </div>
 
-    <!-- Left Side: Login Form -->
     <div class="flex-1 flex items-center justify-center p-8 lg:p-24">
       <div class="w-full max-w-[350px] space-y-8">
         
-        <!-- Desktop Logo -->
         <div class="hidden lg:flex items-center gap-2 mb-12 absolute top-10 left-10">
           <img src="/assets/logo.png" class="w-8 h-8" alt="Logo" />
           <span class="font-bold tracking-tight">Netic ISP</span>
@@ -80,35 +77,27 @@ const handleLogin = async () => {
 
         <div class="text-center">
           <p class="text-[10px] text-zinc-500">Need Help?</p>
-          <a href="tel:+254790882866" class="text-[11px] font-bold underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700">Call/WhatsApp +123 456 7890</a>
+          <a href="tel:+254790882866" class="text-[11px] font-bold underline underline-offset-4 decoration-zinc-300 dark:decoration-zinc-700">Call/WhatsApp +254 790 882866</a>
         </div>
       </div>
     </div>
 
-    <!-- Right Side: Decorative Banner -->
     <div class="hidden lg:flex flex-1 relative bg-zinc-900 overflow-hidden">
-      <!-- Background Image -->
+    
       <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=2070" class="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Welcome" />
       
-      <!-- Gradient Overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
 
       <div class="relative z-10 flex flex-col justify-end p-20 space-y-4">
         <h2 class="text-5xl font-black tracking-tight leading-none">Welcome Back!</h2>
         <p class="text-xl text-zinc-400 font-medium max-w-md">Log in to manage your account and access your ISP dashboard.</p>
         
-        <!-- Abstract Wave Graphics (Matching Screenshot) -->
         <div class="pt-10 flex gap-4 opacity-30">
           <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">🌐</div>
           <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">📶</div>
           <div class="w-12 h-12 rounded-full border border-white flex items-center justify-center">🛡️</div>
         </div>
       </div>
-    </div>
-
-    <!-- Theme Toggle Floating (Optional) -->
-    <div class="fixed bottom-6 left-6 w-10 h-10 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-[10px] font-black border border-zinc-200 dark:border-zinc-700 shadow-xl">
-      N
     </div>
   </div>
 </template>
